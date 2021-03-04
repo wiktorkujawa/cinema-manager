@@ -31,6 +31,7 @@
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.31"
   },
+  "cacheDirectories": [".next/cache"],
   "proxy": "http://localhost:3000",
   "devDependencies": {
     "@graphql-codegen/cli": "1.21.1",
