@@ -1,8 +1,18 @@
 import { Link as ChakraLink, Button } from '@chakra-ui/react'
+import { usePostsQuery } from '../../server/src/generated/graphql'
 
 import { Container } from './Container'
 
-export const CTA = () => (
+export const CTA = () => {
+
+  const { data } = usePostsQuery();
+
+  if(!data){
+		return <div>loading...</div>
+  }
+
+  console.log(data);
+  return (
   <Container
     flexDirection="row"
     position="fixed"
@@ -28,4 +38,4 @@ export const CTA = () => (
       </Button>
     </ChakraLink>
   </Container>
-)
+)}
