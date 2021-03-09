@@ -16,6 +16,22 @@ exports.PostResolver = void 0;
 const type_graphql_1 = require("type-graphql");
 // import { getConnection } from "typeorm";
 const Post_1 = require("../entity/Post");
+let PostInput = class PostInput {
+};
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], PostInput.prototype, "content", void 0);
+PostInput = __decorate([
+    type_graphql_1.InputType()
+], PostInput);
+// @ObjectType()
+// class PaginatedPosts {
+//   @Field(() => [Post])
+//   posts: Post[];
+//   @Field()
+//   hasMore: boolean;
+// }
 let PostResolver = class PostResolver {
     // @FieldResolver(() => String)
     // textSnippet(@Root() post: Post) {
@@ -68,6 +84,32 @@ let PostResolver = class PostResolver {
     post(id) {
         return Post_1.Post.findOne(id);
     }
+    async createPost(input) {
+        return Post_1.Post.create({
+            ...input
+        }).save();
+    }
+    async deletePost(id) {
+        const post = await Post_1.Post.findOne(id);
+        if (!post) {
+            return false;
+        }
+        await Post_1.Post.remove(post);
+        return true;
+    }
+    async updatePost(id, input) {
+        const post = await Post_1.Post.findOne(id);
+        if (!post)
+            throw new Error("Post not found!");
+        Object.assign(post, input);
+        return post.save();
+        // return true
+        // if(!post){
+        //   return false;
+        // }
+        // await Post.remove(post);
+        // return true;
+    }
 };
 __decorate([
     type_graphql_1.Query(() => [Post_1.Post], { nullable: true }),
@@ -82,20 +124,29 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostResolver.prototype, "post", null);
+__decorate([
+    type_graphql_1.Mutation(() => Post_1.Post),
+    __param(0, type_graphql_1.Arg("input")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [PostInput]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "createPost", null);
+__decorate([
+    type_graphql_1.Mutation(() => Boolean),
+    __param(0, type_graphql_1.Arg("id", () => type_graphql_1.ID)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "deletePost", null);
+__decorate([
+    type_graphql_1.Mutation(() => Post_1.Post),
+    __param(0, type_graphql_1.Arg("id", () => type_graphql_1.ID)),
+    __param(1, type_graphql_1.Arg("input")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, PostInput]),
+    __metadata("design:returntype", Promise)
+], PostResolver.prototype, "updatePost", null);
 PostResolver = __decorate([
-    type_graphql_1.InputType()
-    // class PostInput {
-    //   @Field()
-    //   content: string;
-    // }
-    // @ObjectType()
-    // class PaginatedPosts {
-    //   @Field(() => [Post])
-    //   posts: Post[];
-    //   @Field()
-    //   hasMore: boolean;
-    // }
-    ,
     type_graphql_1.Resolver(Post_1.Post)
 ], PostResolver);
 exports.PostResolver = PostResolver;

@@ -1,50 +1,29 @@
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, 
-  // ModalFooter,
-   ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import ChakraForm from '../components/ChakraForm';
+import AddPost from '../components/Post/CRUDForms/AddPost';
+import Item from '../components/Post/CRUDForms/Item';
 
-const fields: any = [
-  {
-    key: 'date',
-    type:'datetime',
-    required: true,
-    templateOptions:{
-      label:'Date'
-    }
-  },
-  {
-    key:'range',
-    type: 'range',
-    required: true,
-    templateOptions:{
-      label: 'Range'
-    },
-    validators:{
-      min:5,
-      max:10
-    }
-  },
+import { usePostsQuery } from '../generated/graphql'
 
-];
 
 const Posts = () => {
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {data, refetch: refetchPosts } = usePostsQuery({});
+
+  if(!data?.posts){
+    return <div>...loading</div>;
+  }
+  
   return (
     <>
-      <Button onClick={onOpen}>Add Post</Button>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Post</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <ChakraForm fields={fields}/>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+    <ul>
+    {
+      data.posts.map(item => {
+        return <Item key={item.id} post={item} refetchPosts={refetchPosts}/>
+      })
+    }
+    </ul>
+      <AddPost refetchPosts={refetchPosts}/>
     </>
   )
 }

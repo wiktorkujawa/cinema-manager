@@ -36,7 +36,6 @@ type Types =
   | "number"
   | "password"
   | "date"
-  | "datetime-local"
   | "radio"
   | "select"
   | "range"
@@ -44,11 +43,6 @@ type Types =
   | "date"
   | "datetime";
 
-// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const onSubmit = (values: any) => {
-  window.alert(JSON.stringify(values, null, 2));
-};
 
 interface Props {
   key: string;
@@ -68,14 +62,17 @@ interface Props {
   };
 }
 
-const ChakraForm = (props: { fields: Props[] }) => {
-  const { fields } = props;
+const ChakraForm = (props: { fields: Props[], onSubmit: any }) => {
+  const { fields, onSubmit } = props;
 
-  console.log(fields);
 
   let initialValues: any = fields.reduce(
-    (obj, item) => Object.assign(obj, { [item.key]: item.defaultValue || "" }),
-    {}
+    (obj, item) => Object.assign(obj, 
+      
+      item.type==='date'? { [item.key]: item.defaultValue || new Date().toISOString().slice(0, 10) }:
+      item.type==='datetime' ? { [item.key]: item.defaultValue || new Date().toISOString().slice(0, 16) } :
+      { [item.key]: item.defaultValue || "" }
+      ),{}
   );
 
   let validationSchema = fields.reduce((obj: any, item) => {
@@ -268,7 +265,7 @@ const ChakraForm = (props: { fields: Props[] }) => {
                     <div>
                       <input
                         className="mt-2 btn btn-outline-dark"
-                        defaultValue={new Date().toISOString().slice(0, -8)}
+                        defaultValue={new Date().toISOString().slice(0, 16)}
                         id={item.key}
                         type="datetime-local"
                         onChange={(event) => {
