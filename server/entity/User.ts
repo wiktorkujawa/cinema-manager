@@ -1,35 +1,47 @@
-import {Entity, ObjectIdColumn, ObjectID, Column} from "typeorm";
+import { Field, ObjectType } from "type-graphql";
+import {Entity, ObjectIdColumn, Column, BaseEntity} from "typeorm";
 
+@ObjectType()
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
+    @Field()
     @ObjectIdColumn()
-    id: ObjectID;
+    id: string;
 
+    @Field()
     @Column()
     email: string;
 
+    @Field()
     @Column()
     password: string;
 
+    @Field()
     @Column()
     displayName: string;
 
+    @Field()
     @Column()
     image: string;
 
+    @Field()
     @Column()
     firstName: string;
 
+    @Field()
     @Column()
     lastName: string;
 
+    @Field()
     @Column({default: false})
     active: boolean;
 
+    @Field()
     @Column()
     activeToken: string;
 
+    @Field()
     @Column()
     activeExpires: number;
 }

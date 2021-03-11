@@ -18,9 +18,11 @@ import { Main } from '../components/Main'
 // import Navbar from '../components/Navbar'
 
 const Index = () => { 
+
+  
   return (
     
-
+    
     <Main textAlign="center">
       <Text fontSize="5xl">  Cinema App manager </Text> 
 <Divider/>

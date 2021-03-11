@@ -1,6 +1,6 @@
 import React from 'react';
 import AddPost from '../components/Post/CRUDForms/AddPost';
-import Item from '../components/Post/CRUDForms/Item';
+import Item from '../components/Post/Item';
 
 import { usePostsQuery } from '../generated/graphql'
 

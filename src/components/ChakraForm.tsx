@@ -62,8 +62,8 @@ interface Props {
   };
 }
 
-const ChakraForm = (props: { fields: Props[], onSubmit: any }) => {
-  const { fields, onSubmit } = props;
+const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
+  const { fields, onSubmit, errors } = props;
 
 
   let initialValues: any = fields.reduce(
@@ -244,7 +244,6 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any }) => {
                         id={item.key}
                         type="date"
                         onChange={(event) => {
-                          console.log(values[item.key]);
                           return (values[item.key] = event.target.value);
                         }}
                       />
@@ -269,7 +268,6 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any }) => {
                         id={item.key}
                         type="datetime-local"
                         onChange={(event) => {
-                          console.log(values[item.key]);
                           return (values[item.key] = event.target.value);
                         }}
                       />
@@ -340,6 +338,10 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any }) => {
             <SubmitButton>Submit</SubmitButton>
             <ResetButton>Reset</ResetButton>
           </ButtonGroup>
+
+          <Box className="text-center" >
+            {errors}
+          </Box>
         </Box>
       )}
     </Formik>

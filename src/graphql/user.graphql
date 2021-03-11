@@ -1,0 +1,25 @@
+query currentUser {
+  currentUser{
+    email
+  }
+}
+
+mutation logout {
+  logout
+}
+
+mutation login($input: LoginInput!) {
+  login(input: $input){
+    errors{
+      message
+    }
+  }
+}
+
+mutation register($input: RegisterInput!) {
+  register(input: $input){
+    errors{
+      message
+    }
+  }
+}

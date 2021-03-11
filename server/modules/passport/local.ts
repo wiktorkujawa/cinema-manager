@@ -1,46 +1,43 @@
-import passportLocal from 'passport-local';
-const LocalStrategy = passportLocal.Strategy;
-import {getRepository} from "typeorm";
+// import passportLocal from 'passport-local';
+// const LocalStrategy = passportLocal.Strategy;
 import bcrypt from 'bcryptjs';
+import { GraphQLLocalStrategy} from 'graphql-passport';
 import {User} from "../../entity/User";
 
 
 module.exports =
   (passport: any) => {
-    passport.use('local',new LocalStrategy({
-        usernameField:'email',
-        passwordField:'password'
-    },
-        (username, password, done) => {
-            getRepository(User).findOne({ email: username })
-            .then( ( user: any) => {
+    passport.use(
+      new GraphQLLocalStrategy( async (email: any, password: any, done: any) => {
+        const user = await User.findOne({ email: email });
               if (!user) {
-                  return done(null, false, { message: 'Incorrect username.' });
+                  return done(new Error("Incorrect username"), false);
+              }
+              if(!user.active) {
+                return done(new Error("Account not activated yet, check your email"), false);
               }
               if (!bcrypt.compareSync(password, user.password)) {
-                  return done(null, false, { message: 'Incorrect password.' });
+                  return done(new Error("Incorrect password"), false);
               }
-              return done(null, user);
+              return done(null, user, { 
+                message: 'You have been logged in'});
           })
-          .catch( err => {
-            if (err) {
-              return done(err);
-            }
-          });
-        }
-    ));
+    );
 
-    passport.serializeUser( function (user: any, done: any) {
-      done(null, user.email);
-    });
+    // passport.serializeUser( function (user: any, done: any) {
+    //   if(!user){
+    //     return done(null, false);
+    //   }
+    //   return done(null, user.email);
+    // });
     
-    passport.deserializeUser( (email: any, done: any) => {
-      getRepository(User).findOne({email:email})
-      .then( ( user: any) => {
-        done(null, user);
-      })
-      .catch(error => {
-        done(error,false);
-      });
-    });
+    // passport.deserializeUser( (email: any, done: any) => {
+    //   User.findOne({email:email})
+    //   .then( ( user: any) => {
+    //     done(null, user);
+    //   })
+    //   .catch(error => {
+    //     done(error,false);
+    //   });
+    // });
   }

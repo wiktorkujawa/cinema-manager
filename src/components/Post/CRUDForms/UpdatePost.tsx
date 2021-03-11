@@ -25,7 +25,7 @@ const UpdatePost = (props: any) => {
   const [updatePost] = useUpdatePostMutation();
 
   const onSubmit = (values: any) => {
-    return updatePost({ variables: { id: post.id, input: values } }).then(()=> refetchPosts());
+    return updatePost({ variables: { id: post.id, input: values }, refetchQueries: refetchPosts });
   };
 
 
@@ -39,7 +39,7 @@ const UpdatePost = (props: any) => {
           <ModalHeader>Post</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit}/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
           </ModalBody>
         </ModalContent>
       </Modal>

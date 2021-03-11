@@ -22,9 +22,16 @@ import {
   ChevronRightIcon,
 } from '@chakra-ui/icons';
 import { DarkModeSwitch } from './DarkModeSwitch';
+import { useCurrentUserQuery, useLogoutMutation } from '../generated/graphql';
+import Login from './User/Login';
+import Register from './User/Register';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+
+  const { data, refetch: refetchUser } = useCurrentUserQuery();
+
+  const [logout] = useLogoutMutation();
 
   return (
     <Box>
@@ -70,26 +77,24 @@ export default function WithSubnavigation() {
           direction={'row'}
           spacing={6}>
             
+            {
+              !data?.currentUser ?
+              <>
+          <Login refetchUser={refetchUser}/>
+          <Register/>
+          </>
+          :<>
+          <div>{data?.currentUser?.email}</div>
           <Button
             as={'a'}
             fontSize={'sm'}
             fontWeight={400}
             variant={'link'}
-            href={'#'}>
-            Sign In
+            onClick={()=> logout().then(()=> refetchUser())}>
+            Logout
           </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
-            Sign Up
-          </Button>
+          </>
+        }
           <DarkModeSwitch/>
         </Stack>
       </Flex>
