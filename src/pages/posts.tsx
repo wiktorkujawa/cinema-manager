@@ -7,7 +7,7 @@ import { usePostsQuery } from '../generated/graphql'
 
 const Posts = () => {
 
-  const {data, refetch: refetchPosts } = usePostsQuery({});
+  const {data, refetch: refetchPosts } = usePostsQuery({pollInterval:1000});
 
   if(!data?.posts){
     return <div>...loading</div>;
