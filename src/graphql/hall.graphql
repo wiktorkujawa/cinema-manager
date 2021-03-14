@@ -1,0 +1,34 @@
+query Halls {
+  halls {
+    id
+    name
+    sessions{
+      id
+      name
+    }
+  }
+}
+
+mutation createHall($input: HallInput!) {
+  createHall(input: $input) {
+    errors{
+      message
+    }
+  }
+}
+
+mutation deleteHall($id: Int!) {
+  deleteHall(id: $id){
+    errors{
+      message
+    }
+  }
+}
+
+
+mutation updateHall($id: Int!,$input: HallInput!) {
+  updateHall(id:$id,input: $input) {
+    id
+    name
+  }
+}

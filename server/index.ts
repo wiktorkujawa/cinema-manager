@@ -13,6 +13,8 @@ require("./modules/passport/local")(passport);
 import { buildContext } from 'graphql-passport';
 import { User } from './entity/User'; 
 import { activateAccount } from "./modules/activateAccount";
+import { HallResolver } from "./resolvers/hall";
+import { SessionResolver } from "./resolvers/session";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -20,13 +22,20 @@ const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
 (async () => {
+  console.log(process.env.postgresHost);
+  console.log(process.env.postgresUsername);
+  console.log(process.env.postgresPassword);
+  console.log(process.env.postgresDatabase);
+
   await createConnection({
-    type: "mongodb",
-    url: process.env.mongoURI,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    type: "postgres",
+    host: process.env.postgresHost,
+    port: 5432,
+    username: process.env.postgresUsername,
+    password: process.env.postgresPassword,
+    database: process.env.postgresDatabase,
+    logging: true,
     synchronize: true,
-    logging: false,
     entities: [__dirname + "/entity/**/*.js"],
     migrations: [__dirname + "/migration/**/*.js"],
     subscribers: [__dirname + "/subscriber/**/*.js"],
@@ -71,7 +80,7 @@ const port = process.env.PORT || 3000;
       introspection: true,
       playground: true,
       schema: await buildSchema({
-        resolvers: [PostResolver, UserResolver],
+        resolvers: [PostResolver, UserResolver, HallResolver, SessionResolver],
         validate: false,
       }),
       context: ({ req, res }) => 

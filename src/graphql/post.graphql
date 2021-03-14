@@ -11,12 +11,12 @@ mutation createPost($input: PostInput!) {
   }
 }
 
-mutation deletePost($id: ID!) {
+mutation deletePost($id: Int!) {
   deletePost(id: $id)
 }
 
 
-mutation updatePost($id: ID!,$input: PostInput!) {
+mutation updatePost($id: Int!,$input: PostInput!) {
   updatePost(id:$id,input: $input) {
     id
     content
