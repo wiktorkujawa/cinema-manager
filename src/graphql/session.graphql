@@ -1,0 +1,28 @@
+query Sessions {
+  sessions {
+    id
+    name
+  }
+}
+
+mutation createSession($input: SessionInput!) {
+  createSession(input: $input) {
+    name
+  }
+}
+
+mutation deleteSession($id: Int!) {
+  deleteSession(id: $id){
+    errors{
+      message
+    }
+  }
+}
+
+
+mutation updateSession($id: Int!,$input: SessionInput!) {
+  updateSession(id:$id,input: $input) {
+    id
+    name
+  }
+}

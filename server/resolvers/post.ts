@@ -1,6 +1,6 @@
 import {
   Arg,
-  ID,
+  Int,
   Field,
   InputType,
   Mutation,
@@ -25,7 +25,7 @@ export class PostResolver {
   }
 
   @Query(() => Post, { nullable: true })
-  post(@Arg("id", () => ID) id: string): Promise<Post | undefined> {
+  post(@Arg("id", () => Int) id: number): Promise<Post | undefined> {
     return Post.findOne(id);
   }
 
@@ -38,19 +38,15 @@ export class PostResolver {
     }
 
   @Mutation(() => Boolean)
-  async deletePost(@Arg("id", () => ID) id: string): Promise<boolean> {
-    const post = await Post.findOne(id);
-    if(!post){
-      return false;
-    }
-    await Post.remove(post);
+  async deletePost(@Arg("id", () => Int) id: number): Promise<boolean> {
+    await Post.delete(id);
     return true;
   }
 
 
   @Mutation(() => Post)
   async updatePost(
-    @Arg("id", () => ID) id: string,
+    @Arg("id", () => Int) id: number,
     @Arg("input") input: PostInput
     ): Promise<Post | null> {
 
