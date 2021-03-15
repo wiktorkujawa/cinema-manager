@@ -2,6 +2,8 @@ query Sessions {
   sessions {
     id
     name
+    start_time
+    end_time
   }
 }
 

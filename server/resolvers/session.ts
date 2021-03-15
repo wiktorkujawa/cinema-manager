@@ -19,7 +19,9 @@ class SessionInput {
   @Field()
   hall: string;
   @Field()
-  start_time: string;
+  start_time: Date;
+  @Field()
+  duration: number;
   
 }
 
@@ -53,12 +55,14 @@ export class SessionResolver {
     @Arg("input") input: SessionInput): Promise<Session|any>{
       const session = new Session();
       session.name=input.name;
+
       session.start_time=input.start_time;
-      session.end_time=input.start_time;
+      const end_time= input.start_time.getTime()+input.duration*60000;
+      session.end_time= new Date(end_time);
       await session.save();
 
-      const hall = await Hall.findOne({name: input.hall});
-      hall!.sessions = [session];
+      const hall = await Hall.findOne({name: input.hall}, {relations:["sessions"]});
+      hall!.sessions.push(session);
       hall!.save();
       return session;
     }

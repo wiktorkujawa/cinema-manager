@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "watch": "tsc -w --project tsconfig.server.json",
-    "dev": "NODE_ENV=production nodemon dist/index.js",
+    "dev": "nodemon dist/index.js",
     "build:next": "next build",
     "build:server": "tsc --project tsconfig.server.json",
     "build": "yarn build:next && yarn build:server",
@@ -29,6 +29,7 @@
     "framer-motion": "^3.5.2",
     "graphql": "^15.5.0",
     "graphql-passport": "^0.6.3",
+    "moment": "^2.29.1",
     "mongodb": "^3.6.4",
     "next": "latest",
     "nodemailer": "^6.5.0",

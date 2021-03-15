@@ -1,39 +1,39 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { useCreatePostMutation } from '../../../generated/graphql';
+import { useCreateHallMutation } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
 
 const fields: any = [
   {
-    key: 'content',
-    type:'textarea',
+    key: 'name',
+    type:'text',
     required: true,
     templateOptions:{
-      label:'Content'
+      label:'Hall name'
     }
   }
 ];
 
-const AddPost = (props: any) => {
+const AddHall = (props: any) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { refetchPosts } = props;
-  const [createPost] = useCreatePostMutation();
+  const { refetchHalls } = props;
+  const [createHall] = useCreateHallMutation();
 
   const onSubmit = (values: any) => {
-    return createPost({ variables: { input: values }, refetchQueries: refetchPosts });
+    return createHall({ variables: { input: values }, refetchQueries: refetchHalls });
   };
 
 
   return (
     <>
-    <Button onClick={onOpen}>Add Post</Button>
+    <Button marginBottom={10} onClick={onOpen}>Add Hall</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Post</ModalHeader>
+          <ModalHeader>Hall</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
@@ -44,4 +44,4 @@ const AddPost = (props: any) => {
   )
 }
 
-export default AddPost
+export default AddHall

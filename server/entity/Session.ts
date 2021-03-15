@@ -16,11 +16,11 @@ export class Session extends BaseEntity {
 
   @Field()
   @Column()
-  start_time: string;
+  start_time: Date;
 
   @Field()
   @Column()
-  end_time: string;
+  end_time: Date;
 
   @ManyToOne(() => Hall, hall => hall.sessions)
   @Field(()=> Hall)
