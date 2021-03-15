@@ -50,21 +50,36 @@ export class SessionResolver {
     return Session.findOne(id, {relations:["hall"]});
   }
 
-  @Mutation(() => Session)
+  @Mutation(() => SessionResponse)
   async createSession(
-    @Arg("input") input: SessionInput): Promise<Session|any>{
-      const session = new Session();
-      session.name=input.name;
-
-      session.start_time=input.start_time;
-      const end_time= input.start_time.getTime()+input.duration*60000;
-      session.end_time= new Date(end_time);
-      await session.save();
-
+    @Arg("input") input: SessionInput): Promise<SessionResponse>{
       const hall = await Hall.findOne({name: input.hall}, {relations:["sessions"]});
-      hall!.sessions.push(session);
-      hall!.save();
-      return session;
+      let can_add=true;
+      const start_time=input.start_time.getTime(); 
+      const end_time= start_time+input.duration*60000;
+      hall?.sessions.map(session =>{
+        if(end_time>session.start_time.getTime() && start_time<session.end_time.getTime())
+        { can_add=false } 
+      })
+      if(can_add){
+        const session = new Session();
+        session.name=input.name;
+
+        session.start_time=input.start_time;
+        
+        session.end_time= new Date(end_time);
+        await session.save();
+
+        hall!.sessions.push(session);
+        hall!.save();
+        return {errors:{
+          message: `Session ${input.name} added to ${input.hall}`
+        }};
+      }
+      return {errors:{
+        message: `Cant add session to ${input.hall} `
+      }};
+      
     }
 
   @Mutation(() => SessionResponse)

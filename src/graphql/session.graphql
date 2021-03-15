@@ -9,7 +9,9 @@ query Sessions {
 
 mutation createSession($input: SessionInput!) {
   createSession(input: $input) {
-    name
+    errors{
+      message
+    }
   }
 }
 
