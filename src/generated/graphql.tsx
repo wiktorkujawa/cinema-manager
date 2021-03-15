@@ -90,7 +90,7 @@ export type Mutation = {
   createHall: HallResponse;
   deleteHall: HallResponse;
   updateHall: Hall;
-  createSession: Session;
+  createSession: SessionResponse;
   deleteSession: SessionResponse;
   updateSession: Session;
 };
@@ -194,13 +194,6 @@ export type HallInput = {
   name: Scalars['String'];
 };
 
-export type SessionInput = {
-  name: Scalars['String'];
-  hall: Scalars['String'];
-  start_time: Scalars['DateTime'];
-  duration: Scalars['Float'];
-};
-
 export type SessionResponse = {
   __typename?: 'SessionResponse';
   errors?: Maybe<SessionError>;
@@ -209,6 +202,13 @@ export type SessionResponse = {
 export type SessionError = {
   __typename?: 'SessionError';
   message: Scalars['String'];
+};
+
+export type SessionInput = {
+  name: Scalars['String'];
+  hall: Scalars['String'];
+  start_time: Scalars['DateTime'];
+  duration: Scalars['Float'];
 };
 
 export type HallsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -339,8 +339,11 @@ export type CreateSessionMutationVariables = Exact<{
 export type CreateSessionMutation = (
   { __typename?: 'Mutation' }
   & { createSession: (
-    { __typename?: 'Session' }
-    & Pick<Session, 'name'>
+    { __typename?: 'SessionResponse' }
+    & { errors?: Maybe<(
+      { __typename?: 'SessionError' }
+      & Pick<SessionError, 'message'>
+    )> }
   ) }
 );
 
@@ -734,7 +737,9 @@ export type SessionsQueryResult = Apollo.QueryResult<SessionsQuery, SessionsQuer
 export const CreateSessionDocument = gql`
     mutation createSession($input: SessionInput!) {
   createSession(input: $input) {
-    name
+    errors {
+      message
+    }
   }
 }
     `;
