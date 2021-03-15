@@ -1,42 +1,42 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { useUpdatePostMutation } from '../../../generated/graphql';
+import { useUpdateHallMutation } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
 
 
 
-const UpdatePost = (props: any) => {
+const UpdateHall = (props: any) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const { refetchPosts, post } = props;
+  const { refetchHalls, hall } = props;
 
   const fields: any = [
     {
-      key: 'content',
+      key: 'Name',
       type:'textarea',
-      defaultValue: post.content,
+      defaultValue: hall.name,
       required: true,
       templateOptions:{
-        label:'Content'
+        label:'Hall name'
       }
     }
   ];
-  const [updatePost] = useUpdatePostMutation();
+  const [updateHall] = useUpdateHallMutation();
 
   const onSubmit = (values: any) => {
-    return updatePost({ variables: { id: post.id, input: values }, refetchQueries: refetchPosts });
+    return updateHall({ variables: { id: hall.id, input: values }, refetchQueries: refetchHalls });
   };
 
 
   return (
     <>
-    <Button size="xs" onClick={onOpen}>Update Post</Button>
+    <Button size="sm" onClick={onOpen}>Update Hall</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Post</ModalHeader>
+          <ModalHeader>Hall</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
@@ -47,4 +47,4 @@ const UpdatePost = (props: any) => {
   )
 }
 
-export default UpdatePost
+export default UpdateHall

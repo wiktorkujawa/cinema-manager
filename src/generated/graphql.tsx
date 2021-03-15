@@ -11,6 +11,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
 };
 
 export type Query = {
@@ -71,10 +73,11 @@ export type Session = {
   __typename?: 'Session';
   id: Scalars['Float'];
   name: Scalars['String'];
-  start_time: Scalars['String'];
-  end_time: Scalars['String'];
+  start_time: Scalars['DateTime'];
+  end_time: Scalars['DateTime'];
   hall: Hall;
 };
+
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -194,7 +197,8 @@ export type HallInput = {
 export type SessionInput = {
   name: Scalars['String'];
   hall: Scalars['String'];
-  start_time: Scalars['String'];
+  start_time: Scalars['DateTime'];
+  duration: Scalars['Float'];
 };
 
 export type SessionResponse = {
@@ -217,7 +221,7 @@ export type HallsQuery = (
     & Pick<Hall, 'id' | 'name'>
     & { sessions: Array<(
       { __typename?: 'Session' }
-      & Pick<Session, 'id' | 'name'>
+      & Pick<Session, 'id' | 'name' | 'start_time' | 'end_time'>
     )> }
   )>> }
 );
@@ -323,7 +327,7 @@ export type SessionsQuery = (
   { __typename?: 'Query' }
   & { sessions?: Maybe<Array<(
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'name'>
+    & Pick<Session, 'id' | 'name' | 'start_time' | 'end_time'>
   )>> }
 );
 
@@ -430,6 +434,8 @@ export const HallsDocument = gql`
     sessions {
       id
       name
+      start_time
+      end_time
     }
   }
 }
@@ -695,6 +701,8 @@ export const SessionsDocument = gql`
   sessions {
     id
     name
+    start_time
+    end_time
   }
 }
     `;

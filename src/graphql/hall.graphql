@@ -5,6 +5,8 @@ query Halls {
     sessions{
       id
       name
+      start_time
+      end_time
     }
   }
 }
