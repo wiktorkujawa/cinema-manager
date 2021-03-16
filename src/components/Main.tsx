@@ -9,6 +9,7 @@ export const Main = (props: StackProps) => {
     maxWidth="48rem"
     mt="-10vh"
     pt="8rem"
+    pb="4rem"
     px="1rem"
     {...props}
   />
