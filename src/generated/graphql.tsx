@@ -72,9 +72,9 @@ export type Hall = {
 export type Session = {
   __typename?: 'Session';
   id: Scalars['Float'];
-  name: Scalars['String'];
-  start_time: Scalars['DateTime'];
-  end_time: Scalars['DateTime'];
+  title: Scalars['String'];
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
   hall: Hall;
 };
 
@@ -205,9 +205,9 @@ export type SessionError = {
 };
 
 export type SessionInput = {
-  name: Scalars['String'];
+  title: Scalars['String'];
   hall: Scalars['String'];
-  start_time: Scalars['DateTime'];
+  startDate: Scalars['DateTime'];
   duration: Scalars['Float'];
 };
 
@@ -221,7 +221,7 @@ export type HallsQuery = (
     & Pick<Hall, 'id' | 'name'>
     & { sessions: Array<(
       { __typename?: 'Session' }
-      & Pick<Session, 'id' | 'name' | 'start_time' | 'end_time'>
+      & Pick<Session, 'id' | 'title' | 'startDate' | 'endDate'>
     )> }
   )>> }
 );
@@ -327,7 +327,11 @@ export type SessionsQuery = (
   { __typename?: 'Query' }
   & { sessions?: Maybe<Array<(
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'name' | 'start_time' | 'end_time'>
+    & Pick<Session, 'id' | 'title' | 'startDate' | 'endDate'>
+    & { hall: (
+      { __typename?: 'Hall' }
+      & Pick<Hall, 'name' | 'id'>
+    ) }
   )>> }
 );
 
@@ -373,7 +377,7 @@ export type UpdateSessionMutation = (
   { __typename?: 'Mutation' }
   & { updateSession: (
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'name'>
+    & Pick<Session, 'id' | 'title'>
   ) }
 );
 
@@ -436,9 +440,9 @@ export const HallsDocument = gql`
     name
     sessions {
       id
-      name
-      start_time
-      end_time
+      title
+      startDate
+      endDate
     }
   }
 }
@@ -703,9 +707,13 @@ export const SessionsDocument = gql`
     query Sessions {
   sessions {
     id
-    name
-    start_time
-    end_time
+    title
+    startDate
+    endDate
+    hall {
+      name
+      id
+    }
   }
 }
     `;
@@ -806,7 +814,7 @@ export const UpdateSessionDocument = gql`
     mutation updateSession($id: Int!, $input: SessionInput!) {
   updateSession(id: $id, input: $input) {
     id
-    name
+    title
   }
 }
     `;

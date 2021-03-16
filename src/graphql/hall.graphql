@@ -4,9 +4,9 @@ query Halls {
     name
     sessions{
       id
-      name
-      start_time
-      end_time
+      title
+      startDate
+      endDate
     }
   }
 }

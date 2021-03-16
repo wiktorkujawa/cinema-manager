@@ -5,15 +5,15 @@ import ChakraForm from '../../ChakraForm';
 
 const fields: any = [
   {
-    key: 'name',
+    key: 'title',
     type:'text',
     required: true,
     templateOptions:{
-      label:'Session name'
+      label:'Session title'
     }
   },
   {
-    key: 'start_time',
+    key: 'startDate',
     type:'datetime',
     required: true,
     templateOptions:{

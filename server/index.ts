@@ -22,10 +22,6 @@ const handle = app.getRequestHandler();
 const port = process.env.PORT || 3000;
 
 (async () => {
-  console.log(process.env.postgresHost);
-  console.log(process.env.postgresUsername);
-  console.log(process.env.postgresPassword);
-  console.log(process.env.postgresDatabase);
 
   await createConnection({
     type: "postgres",

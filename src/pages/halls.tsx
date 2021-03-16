@@ -20,7 +20,6 @@ const Halls = () => {
     <SimpleGrid columns={[1,1,2,3]} spacing={[4,8,12,15]} margin={[5,10,15,20]}>
     {
       data.halls.map(item => {
-        console.log(item);
         return <Item key={item.id} hall={item} refetchHalls={refetchHalls}/>
       })
     }
