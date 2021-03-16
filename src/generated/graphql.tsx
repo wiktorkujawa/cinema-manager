@@ -93,6 +93,7 @@ export type Mutation = {
   createSession: SessionResponse;
   deleteSession: SessionResponse;
   updateSession: Session;
+  moveSession: SessionResponse;
 };
 
 
@@ -153,6 +154,11 @@ export type MutationUpdateSessionArgs = {
   id: Scalars['Int'];
 };
 
+
+export type MutationMoveSessionArgs = {
+  input: MoveSessionInput;
+};
+
 export type PostInput = {
   content: Scalars['String'];
 };
@@ -209,6 +215,14 @@ export type SessionInput = {
   hall: Scalars['String'];
   startDate: Scalars['DateTime'];
   duration: Scalars['Float'];
+};
+
+export type MoveSessionInput = {
+  id: Scalars['Float'];
+  ownerId?: Maybe<Scalars['Float']>;
+  title?: Maybe<Scalars['String']>;
+  startDate?: Maybe<Scalars['DateTime']>;
+  endDate?: Maybe<Scalars['DateTime']>;
 };
 
 export type HallsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -378,6 +392,22 @@ export type UpdateSessionMutation = (
   & { updateSession: (
     { __typename?: 'Session' }
     & Pick<Session, 'id' | 'title'>
+  ) }
+);
+
+export type MoveSessionMutationVariables = Exact<{
+  input: MoveSessionInput;
+}>;
+
+
+export type MoveSessionMutation = (
+  { __typename?: 'Mutation' }
+  & { moveSession: (
+    { __typename?: 'SessionResponse' }
+    & { errors?: Maybe<(
+      { __typename?: 'SessionError' }
+      & Pick<SessionError, 'message'>
+    )> }
   ) }
 );
 
@@ -844,6 +874,40 @@ export function useUpdateSessionMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateSessionMutationHookResult = ReturnType<typeof useUpdateSessionMutation>;
 export type UpdateSessionMutationResult = Apollo.MutationResult<UpdateSessionMutation>;
 export type UpdateSessionMutationOptions = Apollo.BaseMutationOptions<UpdateSessionMutation, UpdateSessionMutationVariables>;
+export const MoveSessionDocument = gql`
+    mutation moveSession($input: moveSessionInput!) {
+  moveSession(input: $input) {
+    errors {
+      message
+    }
+  }
+}
+    `;
+export type MoveSessionMutationFn = Apollo.MutationFunction<MoveSessionMutation, MoveSessionMutationVariables>;
+
+/**
+ * __useMoveSessionMutation__
+ *
+ * To run a mutation, you first call `useMoveSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveSessionMutation, { data, loading, error }] = useMoveSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useMoveSessionMutation(baseOptions?: Apollo.MutationHookOptions<MoveSessionMutation, MoveSessionMutationVariables>) {
+        return Apollo.useMutation<MoveSessionMutation, MoveSessionMutationVariables>(MoveSessionDocument, baseOptions);
+      }
+export type MoveSessionMutationHookResult = ReturnType<typeof useMoveSessionMutation>;
+export type MoveSessionMutationResult = Apollo.MutationResult<MoveSessionMutation>;
+export type MoveSessionMutationOptions = Apollo.BaseMutationOptions<MoveSessionMutation, MoveSessionMutationVariables>;
 export const CurrentUserDocument = gql`
     query currentUser {
   currentUser {

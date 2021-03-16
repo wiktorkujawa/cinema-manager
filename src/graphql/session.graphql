@@ -34,3 +34,11 @@ mutation updateSession($id: Int!,$input: SessionInput!) {
     title
   }
 }
+
+mutation moveSession($input: moveSessionInput!){
+  moveSession(input: $input) {
+    errors{
+      message
+    }
+  }
+}
