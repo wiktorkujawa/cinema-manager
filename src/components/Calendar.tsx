@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState
+  // , useEffect
+ } from "react";
 import Paper from "@material-ui/core/Paper";
 // import TableCell from "@material-ui/core/TableCell";
 import {
@@ -29,6 +31,7 @@ import {
 import ColorLens from "@material-ui/icons/ColorLens";
 import { withStyles } from "@material-ui/core/styles";
 import { Box, HStack, useRadio, useRadioGroup } from "@chakra-ui/react";
+import { useDeleteSessionMutation, useMoveSessionMutation } from "../generated/graphql";
 // import { useSessionsQuery } from '../generated/graphql';
 
 const getBorder = (theme: any) =>
@@ -283,7 +286,11 @@ const FlexibleSpace = withStyles(styles, { name: "ToolbarRoot" })(
 );
 
 const Calendar = (props: any) => {
-  const { sessions, owners } = props;
+  let { sessions, owners, refetchSessions } = props;
+
+  const [moveSession] = useMoveSessionMutation();
+
+  const [deleteSession] = useDeleteSessionMutation();
 
   const options = ["Day", "Week", "Month"];
 
@@ -305,37 +312,47 @@ const Calendar = (props: any) => {
       instances: owners,
     },
   ];
-  const [appointments, setAppointments] = useState([] as any);
   
-
-  useEffect(() => {
-    setAppointments(sessions);
-  }, []);
-
 
   const commitChanges = ({ added, changed, deleted }: any) => {
 
-    setAppointments(appointments);
+    console.log("whatever");
     if (added) {
-      const startingAddedId =
-        appointments.length > 0
-          ? appointments[appointments.length - 1].id + 1
-          : 0;
-      setAppointments([...appointments, { id: startingAddedId, ...added }]);
+      // const startingAddedId =
+      //   appointments.length > 0
+      //     ? appointments[appointments.length - 1].id + 1
+      //     : 0;
+      // setAppointments([...appointments, { id: startingAddedId, ...added }]);
     }
     if (changed) {
-      setAppointments(
-        appointments.map((appointment: any) =>
-          changed[appointment.id]
-            ? { ...appointment, ...changed[appointment.id] }
-            : appointment
-        )
-      );
+      
+      const id = Object.keys(changed)[0];
+      if(view == "Month"){
+
+        const old = sessions.find((session:any) => session.id === parseInt(id));
+        const difference = old.endDate.getTime() - old.startDate.getTime();
+        const startTime = old.startDate.getHours()*3600000+old.startDate.getMinutes()*60000;
+        changed[id].startDate = new Date(changed[id].startDate.getTime()+startTime).toISOString(); 
+        changed[id].endDate = new Date(changed[id].endDate.getTime()-86400000+startTime+difference).toISOString();
+      }
+
+        return moveSession({variables:{
+          input: {
+            id: parseInt(id),
+            ...changed[id]
+          }
+        }, refetchQueries: refetchSessions
+      })
+      // console.log("do something");
     }
     if (deleted !== undefined) {
-      setAppointments(
-        appointments.filter((appointment: any) => appointment.id !== deleted)
-      );
+      deleteSession({
+        variables: { id: deleted },
+        refetchQueries: refetchSessions,
+      })
+      // setAppointments(
+      //   appointments.filter((appointment: any) => appointment.id !== deleted)
+      // );
     }
     //   return { data };
     // });
@@ -344,7 +361,7 @@ const Calendar = (props: any) => {
   return (
     <Paper className="pt-3" >
    
-      <Scheduler data={appointments}>
+      <Scheduler data={sessions}>
 
         
         <HStack display="flex" justifyContent="center" zIndex={{md:"2"}} position={{md:"absolute"}} left={{md:"50%"}} transform={{md:"translateX(-50%)"}} {...group}>

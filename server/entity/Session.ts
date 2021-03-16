@@ -25,5 +25,9 @@ export class Session extends BaseEntity {
   @ManyToOne(() => Hall, hall => hall.sessions)
   @Field(()=> Hall)
   hall: Hall;
+
+  // @Field()
+  // @Column()
+  // hallId: number;
   
 }

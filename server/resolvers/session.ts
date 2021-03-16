@@ -8,6 +8,7 @@ import {
   Resolver,
   ObjectType,
 } from "type-graphql";
+import { Not } from "typeorm";
 import { Hall } from "../entity/Hall";
 import { Session } from "../entity/Session";
 
@@ -22,6 +23,22 @@ class SessionInput {
   startDate: Date;
   @Field()
   duration: number;
+  
+}
+
+@InputType()
+class moveSessionInput {
+
+  @Field()
+  id: number;
+  @Field({nullable: true})
+  ownerId: number;
+  @Field({nullable: true})
+  title: string;
+  @Field({nullable: true})
+  startDate: Date;
+  @Field({nullable: true})
+  endDate: Date;
   
 }
 
@@ -103,5 +120,63 @@ export class SessionResolver {
       return session.save();
 
   }
+
+  @Mutation(() => SessionResponse)
+  async moveSession(
+    @Arg("input") input: moveSessionInput
+    ): Promise<SessionResponse> {
+
+      const newStart = input.startDate.getTime();
+      const newEnd = input.endDate.getTime();
+      
+      if (newStart>=newEnd) return {errors:{
+        message: `Start cannot be ahead of end`
+      }};
+
+      const session = await Session.findOne(input.id, { relations:['hall']});
+      if (!session) throw new Error("Session not found!");
+      
+      console.log(input.ownerId);
+      const other_sessions = await Session.find({relations:['hall'], where: {
+        hall:{
+          id: input.ownerId || session?.hall.id
+        },
+        id: Not(input.id)
+      },
+    });
+
+    let can_move = true
+    other_sessions.some(({startDate, endDate}) => {
+      if(newEnd>startDate.getTime() && newStart<endDate.getTime()){
+        can_move = false;
+        return true;
+      }
+    })
+    // Date.parse(req.body.end)>Date.parse(start) && Date.parse(req.body.start)<Date.parse(end)
+
+    console.log(input);
+
+    console.log(session);
+    console.log(other_sessions);
+
+      if(can_move){
+        Object.assign(session, input);
+        session.save();
+        return {
+          errors:{
+            message:"Session moved"
+          }
+        }
+      }
+
+      return {
+        errors:{
+          message: "Already booked"
+        }
+      }
+
+  }
+
+
   
 }
