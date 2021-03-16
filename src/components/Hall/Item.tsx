@@ -22,7 +22,6 @@ import moment from "moment";
 const Item = (props: any) => {
   const base = useRouter();
   const { hall, refetchHalls } = props;
-  console.log(hall.sessions);
 
   const [deleteHall] = useDeleteHallMutation();
 
@@ -69,12 +68,12 @@ const Item = (props: any) => {
             {hall.sessions.map((session: any) => {
               return (
                 <Tr key={session.id}>
-                  <Td>{session.name}</Td>
+                  <Td>{session.title}</Td>
                   <Td>
-                    {moment(session.start_time).format("MMMM Do YYYY, h:mm a")}
+                    {moment(session.startDate).format("MMMM Do YYYY, h:mm a")}
                   </Td>
                   <Td>
-                    {moment(session.end_time).format("MMMM Do YYYY, h:mm a")}
+                    {moment(session.endDate).format("MMMM Do YYYY, h:mm a")}
                   </Td>
                   <Td>
                     <Button

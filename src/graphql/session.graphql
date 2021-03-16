@@ -1,9 +1,13 @@
 query Sessions {
   sessions {
     id
-    name
-    start_time
-    end_time
+    title
+    startDate
+    endDate
+    hall{
+      name
+      id
+    }
   }
 }
 
@@ -27,6 +31,6 @@ mutation deleteSession($id: Int!) {
 mutation updateSession($id: Int!,$input: SessionInput!) {
   updateSession(id:$id,input: $input) {
     id
-    name
+    title
   }
 }

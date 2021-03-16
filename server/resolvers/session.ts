@@ -15,11 +15,11 @@ import { Session } from "../entity/Session";
 class SessionInput {
 
   @Field()
-  name: string;
+  title: string;
   @Field()
   hall: string;
   @Field()
-  start_time: Date;
+  startDate: Date;
   @Field()
   duration: number;
   
@@ -55,25 +55,25 @@ export class SessionResolver {
     @Arg("input") input: SessionInput): Promise<SessionResponse>{
       const hall = await Hall.findOne({name: input.hall}, {relations:["sessions"]});
       let can_add=true;
-      const start_time=input.start_time.getTime(); 
-      const end_time= start_time+input.duration*60000;
+      const startDate=input.startDate.getTime(); 
+      const endDate= startDate+input.duration*60000;
       hall?.sessions.map(session =>{
-        if(end_time>session.start_time.getTime() && start_time<session.end_time.getTime())
+        if(endDate>session.startDate.getTime() && startDate<session.endDate.getTime())
         { can_add=false } 
       })
       if(can_add){
         const session = new Session();
-        session.name=input.name;
+        session.title=input.title;
 
-        session.start_time=input.start_time;
+        session.startDate=input.startDate;
         
-        session.end_time= new Date(end_time);
+        session.endDate= new Date(endDate);
         await session.save();
 
         hall!.sessions.push(session);
         hall!.save();
         return {errors:{
-          message: `Session ${input.name} added to ${input.hall}`
+          message: `Session ${input.title} added to ${input.hall}`
         }};
       }
       return {errors:{
