@@ -15,6 +15,7 @@ import { User } from './entity/User';
 import { activateAccount } from "./modules/activateAccount";
 import { HallResolver } from "./resolvers/hall";
 import { SessionResolver } from "./resolvers/session";
+import { MovieResolver } from "./resolvers/movie";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -76,7 +77,7 @@ const port = process.env.PORT || 3000;
       introspection: true,
       playground: true,
       schema: await buildSchema({
-        resolvers: [PostResolver, UserResolver, HallResolver, SessionResolver],
+        resolvers: [PostResolver, UserResolver, HallResolver, SessionResolver, MovieResolver],
         validate: false,
       }),
       context: ({ req, res }) => 

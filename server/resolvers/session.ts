@@ -32,7 +32,7 @@ class moveSessionInput {
   @Field()
   id: number;
   @Field({nullable: true})
-  ownerId: number;
+  hallId: number;
   @Field({nullable: true})
   title: string;
   @Field({nullable: true})
@@ -136,10 +136,10 @@ export class SessionResolver {
       const session = await Session.findOne(input.id, { relations:['hall']});
       if (!session) throw new Error("Session not found!");
       
-      console.log(input.ownerId);
+      console.log(input.hallId);
       const other_sessions = await Session.find({relations:['hall'], where: {
         hall:{
-          id: input.ownerId || session?.hall.id
+          id: input.hallId || session?.hall.id
         },
         id: Not(input.id)
       },
@@ -152,7 +152,7 @@ export class SessionResolver {
         return true;
       }
     })
-    // Date.parse(req.body.end)>Date.parse(start) && Date.parse(req.body.start)<Date.parse(end)
+
 
     console.log(input);
 

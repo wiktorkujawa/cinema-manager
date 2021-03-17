@@ -286,7 +286,7 @@ const FlexibleSpace = withStyles(styles, { name: "ToolbarRoot" })(
 );
 
 const Calendar = (props: any) => {
-  let { sessions, owners, refetchSessions } = props;
+  let { sessions, halls, refetchSessions } = props;
 
   const [moveSession] = useMoveSessionMutation();
 
@@ -307,16 +307,15 @@ const Calendar = (props: any) => {
 
   const resources = [
     {
-      fieldName: "ownerId",
-      title: "Owners",
-      instances: owners,
+      fieldName: "hallId",
+      title: "Halls",
+      instances: halls,
     },
   ];
   
 
   const commitChanges = ({ added, changed, deleted }: any) => {
 
-    console.log("whatever");
     if (added) {
       // const startingAddedId =
       //   appointments.length > 0
@@ -325,6 +324,7 @@ const Calendar = (props: any) => {
       // setAppointments([...appointments, { id: startingAddedId, ...added }]);
     }
     if (changed) {
+      console.log(changed);
       
       const id = Object.keys(changed)[0];
       if(view == "Month"){
