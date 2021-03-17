@@ -279,6 +279,8 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
             if (item.type === "select") {
               return (
                 <SelectControl
+                  onFocus={()=> console.log('open')}
+                  onChange={()=>console.log('select')}
                   key={item.key}
                   name={item.key}
                   selectProps={{

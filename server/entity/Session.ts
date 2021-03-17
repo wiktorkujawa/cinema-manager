@@ -26,8 +26,8 @@ export class Session extends BaseEntity {
   @Field(()=> Hall)
   hall: Hall;
 
-  // @Field()
-  // @Column()
-  // hallId: number;
+  @Field()
+  @Column()
+  hallId: number;
   
 }

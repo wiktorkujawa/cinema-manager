@@ -327,14 +327,14 @@ const Calendar = (props: any) => {
       console.log(changed);
       
       const id = Object.keys(changed)[0];
-      if(view == "Month"){
+      // if(view == "Month"){
 
-        const old = sessions.find((session:any) => session.id === parseInt(id));
-        const difference = old.endDate.getTime() - old.startDate.getTime();
-        const startTime = old.startDate.getHours()*3600000+old.startDate.getMinutes()*60000;
-        changed[id].startDate = new Date(changed[id].startDate.getTime()+startTime).toISOString(); 
-        changed[id].endDate = new Date(changed[id].endDate.getTime()-86400000+startTime+difference).toISOString();
-      }
+      //   const old = sessions.find((session:any) => session.id === parseInt(id));
+      //   const difference = old.endDate.getTime() - old.startDate.getTime();
+      //   const startTime = old.startDate.getHours()*3600000+old.startDate.getMinutes()*60000;
+      //   changed[id].startDate = new Date(changed[id].startDate.getTime()+startTime).toISOString(); 
+      //   changed[id].endDate = new Date(changed[id].endDate.getTime()-86400000+startTime+difference).toISOString();
+      // }
 
         return moveSession({variables:{
           input: {

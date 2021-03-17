@@ -126,21 +126,21 @@ export class SessionResolver {
     @Arg("input") input: moveSessionInput
     ): Promise<SessionResponse> {
 
-      const newStart = input.startDate.getTime();
-      const newEnd = input.endDate.getTime();
+      const session = await Session.findOne(input.id, { relations:['hall']});
+      if (!session) throw new Error("Session not found!");
+      
+      const newStart = input.startDate ? input.startDate.getTime() : session.startDate.getTime();
+      const newEnd = input.endDate ? input.endDate.getTime() : session.endDate.getTime();
       
       if (newStart>=newEnd) return {errors:{
         message: `Start cannot be ahead of end`
       }};
 
-      const session = await Session.findOne(input.id, { relations:['hall']});
-      if (!session) throw new Error("Session not found!");
+      
       
       console.log(input.hallId);
       const other_sessions = await Session.find({relations:['hall'], where: {
-        hall:{
-          id: input.hallId || session?.hall.id
-        },
+        hallId: input.hallId || session?.hall.id,
         id: Not(input.id)
       },
     });
@@ -160,7 +160,9 @@ export class SessionResolver {
     console.log(other_sessions);
 
       if(can_move){
-        Object.assign(session, input);
+        Object.assign(session, {...input,
+        hall: {
+          id: input.hallId}});
         session.save();
         return {
           errors:{
