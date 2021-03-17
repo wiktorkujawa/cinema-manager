@@ -11,21 +11,22 @@ export class Movie extends BaseEntity {
 
   @Field()
   @Column()
-  title: string;
+  Title: string;
 
   @Field()
   @Column()
-  description: string;
+  Year: string;
 
   @Field()
   @Column()
-  length: number;
+  Description: string;
 
   @Field()
   @Column()
-  poster: string;
+  Length: number;
 
-
-
+  @Field()
+  @Column()
+  Poster: string;
 
 }

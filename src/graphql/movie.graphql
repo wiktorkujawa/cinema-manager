@@ -1,0 +1,42 @@
+query Movies {
+  movies {
+    id
+    Title
+    Year
+    Poster
+    Length
+    Description
+  }
+}
+
+query SearchMovies($movie: String!) {
+  searchMovies(movie: $movie) {
+    Title
+    Year
+    Poster
+  }
+}
+
+mutation createMovie($input: MovieInput!) {
+  createMovie(input: $input) {
+    errors{
+      message
+    }
+  }
+}
+
+mutation deleteMovie($id: Int!) {
+  deleteMovie(id: $id){
+    errors{
+      message
+    }
+  }
+}
+
+
+mutation updateMovie($id: Int!,$input: MovieInput!) {
+  updateMovie(id:$id,input: $input) {
+    id
+    Title
+  }
+}
