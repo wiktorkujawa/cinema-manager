@@ -54,6 +54,7 @@ interface Props {
   templateOptions?: {
     options?: any[];
     label?: string;
+    optionLabel?: any;
     placeholder?: string;
     required?: boolean;
     previewImage?:boolean;
@@ -306,14 +307,18 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
                   }}
                   key={item.key}
                   name={item.key}
+                  label={item.templateOptions?.label}
                   selectProps={{
                     placeholder: item.templateOptions?.placeholder,
                   }}
                 >
                   {item.templateOptions?.options?.map((option,index) => {
                     return (
-                      <option onClick={(event)=>console.log(event)} key={index} value={index}>
-                        {`${option.Title}(${option.Year})`}
+                      <option key={index} value={index}
+                       label={item.templateOptions?.optionLabel(option)}
+                        >
+                        {/* {item?.optionLabel(option)} */}
+                
                       </option>
                     );
                   })}

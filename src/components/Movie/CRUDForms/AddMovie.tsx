@@ -21,9 +21,10 @@ const AddMovie = (props: any) => {
     })
   };
 
+  const onLabel = (option:any) => `${option.Title} (${option.Year})`
+
   const onChange = (values:any, item:any, event:any) =>{
-    values.Title = item.templateOptions?.options![event.target.value].Title;
-    values.Year = item.templateOptions?.options![event.target.value].Year;
+    values.Title = `${item.templateOptions?.options![event.target.value].Title} (${item.templateOptions?.options![event.target.value].Year})`;
     values.Poster = item.templateOptions?.options![event.target.value].Poster;
   }
 
@@ -35,14 +36,6 @@ const AddMovie = (props: any) => {
       required: true,
       templateOptions:{
         label:'Movie title'
-      }
-    },
-    {
-      key: 'Year',
-      type:'text',
-      required: true,
-      templateOptions:{
-        label:'Movie Year'
       }
     },
     {
@@ -76,6 +69,7 @@ const AddMovie = (props: any) => {
       required: true,
       templateOptions:{
         label:'Movie description',
+        optionLabel: onLabel,
         options: data?.searchMovies
       },
       expressions:{

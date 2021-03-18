@@ -29,8 +29,8 @@ const Item = (props: any) => {
         justifyContent="center"
         position="relative"
       >
-        <Link margin="2" href={`${base.asPath}/${movie.id}`}>
-          <p>{`${movie.Title} (${movie.Year})`}</p>
+        <Link margin="2" href={`${base.asPath}/${movie.Title}`}>
+          <p>{movie.Title}</p>
         </Link>
         <Button
           position="absolute"
@@ -57,10 +57,7 @@ const Item = (props: any) => {
       </Box>
       
     </Box>
-    // </div>
 
-    // </li>
-    /* </Box> */
   );
 };
 

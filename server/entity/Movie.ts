@@ -15,10 +15,6 @@ export class Movie extends BaseEntity {
 
   @Field()
   @Column()
-  Year: string;
-
-  @Field()
-  @Column()
   Description: string;
 
   @Field()

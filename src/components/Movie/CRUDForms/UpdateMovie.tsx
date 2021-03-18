@@ -22,15 +22,6 @@ const UpdateMovie = (props: any) => {
         }
       },
       {
-        key: 'Year',
-        type:'text',
-        defaultValue: movie.Year,
-        required: true,
-        templateOptions:{
-          label:'Movie Year'
-        }
-      },
-      {
         key: 'Poster',
         type:'text',
         defaultValue: movie.Poster,
