@@ -17,11 +17,11 @@ const AddSession = (props: any) => {
 
 
   
-
+  const onLabel = (option:any) => option.Title
  
   const onChange = (values:any, item:any, event:any) =>{
 
-    values.title = `${item.templateOptions?.options![event.target.value].Title} (${item.templateOptions?.options![event.target.value].Year})`;
+    values.title = `${item.templateOptions?.options![event.target.value].Title}`;
     values.duration = item.templateOptions?.options![event.target.value].Length;
   }
 
@@ -66,7 +66,8 @@ const AddSession = (props: any) => {
       required: true,
       templateOptions:{
         label:'Movie description',
-        options: data.movies
+        options: data.movies,
+        optionLabel: onLabel
       },
       expressions:{
         onChange: onChange

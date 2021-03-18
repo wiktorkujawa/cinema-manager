@@ -2,7 +2,6 @@ query Movies {
   movies {
     id
     Title
-    Year
     Poster
     Length
     Description

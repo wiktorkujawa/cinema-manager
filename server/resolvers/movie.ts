@@ -17,8 +17,6 @@ class MovieInput {
   @Field()
   Description: string;
   @Field()
-  Year: string;
-  @Field()
   Length: number;
   @Field()
   Poster: string;

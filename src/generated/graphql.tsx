@@ -91,7 +91,6 @@ export type Movie = {
   __typename?: 'Movie';
   id: Scalars['Float'];
   Title: Scalars['String'];
-  Year: Scalars['String'];
   Description: Scalars['String'];
   Length: Scalars['Float'];
   Poster: Scalars['String'];
@@ -292,7 +291,6 @@ export type MovieError = {
 export type MovieInput = {
   Title: Scalars['String'];
   Description: Scalars['String'];
-  Year: Scalars['String'];
   Length: Scalars['Float'];
   Poster: Scalars['String'];
 };
@@ -382,7 +380,7 @@ export type MoviesQuery = (
   { __typename?: 'Query' }
   & { movies?: Maybe<Array<(
     { __typename?: 'Movie' }
-    & Pick<Movie, 'id' | 'Title' | 'Year' | 'Poster' | 'Length' | 'Description'>
+    & Pick<Movie, 'id' | 'Title' | 'Poster' | 'Length' | 'Description'>
   )>> }
 );
 
@@ -810,7 +808,6 @@ export const MoviesDocument = gql`
   movies {
     id
     Title
-    Year
     Poster
     Length
     Description
