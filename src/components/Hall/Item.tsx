@@ -31,15 +31,14 @@ const Item = (props: any) => {
     deleteHall({ variables: { id: hall.id }, refetchQueries: refetchHalls });
 
   return (
-    <Box display="grid" gridTemplateRows="auto 1fr auto">
-      {/* </Box> */}
+    <Box margin="5" display="grid" gridTemplateRows="auto 1fr auto">
       <Box
         display="flex"
         bg="yellow.500"
         justifyContent="center"
         position="relative"
       >
-        <Link margin="2" href={`${base.asPath}/${hall.id}`}>
+        <Link margin="2" href={`${base.asPath}/${hall.name}`}>
           <p>{hall.name}</p>
         </Link>
         <Button
@@ -95,7 +94,6 @@ const Item = (props: any) => {
           </Tbody>
         </Table>
       ) : (
-        // {/* </ul> */}
         <Box display="flex" justifyContent="center" alignItems="center">
           No sessions
         </Box>
@@ -110,10 +108,6 @@ const Item = (props: any) => {
         <AddSession refetchHalls={refetchHalls} hall_name={hall.name} />{" "}
       </Box>
     </Box>
-    // </div>
-
-    // </li>
-    /* </Box> */
   );
 };
 

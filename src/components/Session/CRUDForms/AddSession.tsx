@@ -1,48 +1,89 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { useCreateSessionMutation } from '../../../generated/graphql';
+import { useCreateSessionMutation, useMoviesQuery } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
 
-const fields: any = [
-  {
-    key: 'title',
-    type:'text',
-    required: true,
-    templateOptions:{
-      label:'Session title'
-    }
-  },
-  {
-    key: 'startDate',
-    type:'datetime',
-    required: true,
-    templateOptions:{
-      label:'Session start'
-    }
-  },
-  {
-    key: 'duration',
-    type:'number',
-    required: true,
-    templateOptions:{
-      label:'Session length'
-    }
-  },
 
-];
 
 const AddSession = (props: any) => {
+  const { data } = useMoviesQuery();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [createSession] = useCreateSessionMutation();
+   
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  if(!data?.movies){
+    return <div>loading...</div>
+  }
+
+
+  
+
+ 
+  const onChange = (values:any, item:any, event:any) =>{
+
+    values.title = `${item.templateOptions?.options![event.target.value].Title} (${item.templateOptions?.options![event.target.value].Year})`;
+    values.duration = item.templateOptions?.options![event.target.value].Length;
+  }
+
+  const fields: any = [
+    {
+      key: 'title',
+      type:'text',
+      id:'title',
+      required: true,
+      templateOptions:{
+        label:'Session title'
+      }
+    },
+    {
+      key: 'notes',
+      type:'textarea',
+      required: true,
+      templateOptions:{
+        label:'Notes about Session'
+      }
+    },
+    {
+      key: 'startDate',
+      type:'datetime',
+      required: true,
+      templateOptions:{
+        label:'Session start'
+      }
+    },
+    {
+      key: 'duration',
+      type:'number',
+      id:'duration',
+      required: true,
+      templateOptions:{
+        label:'Session length'
+      }
+    },
+    {
+      key: 'search',
+      type:'select',
+      required: true,
+      templateOptions:{
+        label:'Movie description',
+        options: data.movies
+      },
+      expressions:{
+        onChange: onChange
+      }
+    }
+  
+  ];
 
   const { refetchSessions, hall_name } = props;
-  const [createSession] = useCreateSessionMutation();
+
 
   const onSubmit = (values: any) => {
-    values.duration=parseInt(values.duration);
+    let { search, ...newValues} = values;
+    newValues.duration=parseInt(values.duration);
     return createSession({ variables: { input: {
       hall: hall_name,
-      ...values} }, refetchQueries: refetchSessions });
+      ...newValues} }, refetchQueries: refetchSessions });
   };
 
 

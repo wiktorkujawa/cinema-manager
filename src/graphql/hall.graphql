@@ -5,6 +5,21 @@ query Halls {
     sessions{
       id
       title
+      notes
+      startDate
+      endDate
+    }
+  }
+}
+
+query Hall($hallName: String!) {
+  hall(hallName: $hallName) {
+    id
+    name
+    sessions{
+      id
+      title
+      notes
       startDate
       endDate
     }

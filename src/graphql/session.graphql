@@ -2,6 +2,7 @@ query Sessions {
   sessions {
     id
     title
+    notes
     startDate
     endDate
     hall{
@@ -32,6 +33,7 @@ mutation updateSession($id: Int!,$input: SessionInput!) {
   updateSession(id:$id,input: $input) {
     id
     title
+    notes
   }
 }
 

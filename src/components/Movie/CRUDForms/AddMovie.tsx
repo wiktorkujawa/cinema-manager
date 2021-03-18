@@ -1,51 +1,8 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { useCreateMovieMutation } from '../../../generated/graphql';
+import { useCreateMovieMutation, useSearchMoviesMutation } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
 
-const fields: any = [
-  {
-    key: 'Title',
-    type:'text',
-    required: true,
-    templateOptions:{
-      label:'Movie title'
-    }
-  },
-  {
-    key: 'Year',
-    type:'text',
-    required: true,
-    templateOptions:{
-      label:'Movie Year'
-    }
-  },
-  {
-    key: 'Poster',
-    type:'text',
-    required: true,
-    templateOptions:{
-      label:'Movie Poster'
-    }
-  },
-  {
-    key: 'Description',
-    type:'textarea',
-    required: true,
-    templateOptions:{
-      label:'Movie description'
-    }
-  },
-  {
-    key: 'search',
-    type:'select',
-    required: true,
-    templateOptions:{
-      label:'Movie description',
-      options:['a','b','c']
-    }
-  }
-];
 
 const AddMovie = (props: any) => {
 
@@ -54,8 +11,85 @@ const AddMovie = (props: any) => {
   const { refetchMovies } = props;
   const [createMovie] = useCreateMovieMutation();
 
+  const [searchMovies, {data}] = useSearchMoviesMutation();
+
+
+  const onSearch = (event:any) => {
+    return searchMovies({variables: {
+      movie: event
+      }
+    })
+  };
+
+  const onChange = (values:any, item:any, event:any) =>{
+    values.Title = item.templateOptions?.options![event.target.value].Title;
+    values.Year = item.templateOptions?.options![event.target.value].Year;
+    values.Poster = item.templateOptions?.options![event.target.value].Poster;
+  }
+
+
+  const fields: any = [
+    {
+      key: 'Title',
+      type:'text',
+      required: true,
+      templateOptions:{
+        label:'Movie title'
+      }
+    },
+    {
+      key: 'Year',
+      type:'text',
+      required: true,
+      templateOptions:{
+        label:'Movie Year'
+      }
+    },
+    {
+      key: 'Poster',
+      type:'text',
+      required: true,
+      templateOptions:{
+        label:'Movie Poster',
+        previewImage: true
+      }
+    },
+    {
+      key: 'Description',
+      type:'textarea',
+      required: true,
+      templateOptions:{
+        label:'Movie description'
+      }
+    },
+    {
+      key: 'Length',
+      type:'number',
+      required: true,
+      templateOptions:{
+        label:'Movie length'
+      }
+    },
+    {
+      key: 'search',
+      type:'select',
+      required: true,
+      templateOptions:{
+        label:'Movie description',
+        options: data?.searchMovies
+      },
+      expressions:{
+        onFocus: onSearch,
+        onChange: onChange
+      }
+    }
+  ];
+
   const onSubmit = (values: any) => {
-    return createMovie({ variables: { input: values }, refetchQueries: refetchMovies });
+    const { search, Length, ...newValues} = values;
+    return createMovie({ variables: { input: {
+      Length: parseInt(Length),
+      ...newValues} }, refetchQueries: refetchMovies });
   };
 
 

@@ -8,7 +8,7 @@ import React from "react";
 import {
   useDeleteMovieMutation,
 } from "../../generated/graphql";
-// import UpdateHall from "./CRUDForms/UpdateHall";
+import UpdateMovie from "./CRUDForms/UpdateMovie";
 import { useRouter } from "next/router";
 
 const Item = (props: any) => {
@@ -30,7 +30,7 @@ const Item = (props: any) => {
         position="relative"
       >
         <Link margin="2" href={`${base.asPath}/${movie.id}`}>
-          <p>{movie.Title}</p>
+          <p>{`${movie.Title} (${movie.Year})`}</p>
         </Link>
         <Button
           position="absolute"
@@ -43,19 +43,19 @@ const Item = (props: any) => {
         </Button>
       </Box>
 
-      <Box>
-        <Img src={movie.Poster}/>
+      <Box display="flex" justifyContent="center">
+        <Img src={movie.Poster} onError={(e:any)=>{e.target.onerror = null; e.target.src="/cinema_logo.png"}}/>
       </Box>
       
       <Box
         bg="yellow.500"
         padding=".5em .5em"
         display="flex"
-        justifyContent="space-between"
+        justifyContent="center"
       >
-        {/* <UpdateMovie refetchHalls={refetchHalls} hall={hall} /> */}
+        <UpdateMovie refetchHalls={refetchMovies} movie={movie} />
       </Box>
-      hello
+      
     </Box>
     // </div>
 

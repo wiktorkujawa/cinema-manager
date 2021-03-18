@@ -36,8 +36,8 @@ export class HallResolver {
   }
 
   @Query(() => Hall, { nullable: true })
-  hall(@Arg("id", () => Int) id: number): Promise<Hall | undefined> {
-    return Hall.findOne(id, { relations: ["sessions"] });
+  hall(@Arg("hallName", () => String) hallName: string): Promise<Hall | undefined> {
+    return Hall.findOne({name:hallName}, { relations: ["sessions"] });
   }
 
   @Mutation(() => HallResponse)
