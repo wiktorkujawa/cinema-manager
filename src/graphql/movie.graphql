@@ -9,11 +9,12 @@ query Movies {
   }
 }
 
-query SearchMovies($movie: String!) {
+mutation searchMovies($movie: String!) {
   searchMovies(movie: $movie) {
     Title
     Year
     Poster
+    imdbID
   }
 }
 

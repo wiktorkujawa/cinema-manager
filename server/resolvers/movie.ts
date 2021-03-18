@@ -58,16 +58,16 @@ export class MovieResolver {
     return Movie.find();
   }
 
-  @Query(() => [SearchResponse], { nullable: true })
+  @Query(() => Movie, { nullable: true })
+  movie(@Arg("id", () => Int) id: number): Promise<Movie | undefined> {
+    return Movie.findOne(id);
+  }
+
+  @Mutation(() => [SearchResponse], { nullable: true })
   async searchMovies(@Arg("movie", () => String) movie: string): Promise<SearchResponse[] | undefined> {
    return fetch(`http://www.omdbapi.com/?s=${movie}&apikey=${process.env.OMDB_API_KEY}`)
   .then(response => response.json())
   .then(data =>  data.Search);
-  }
-
-  @Query(() => Movie, { nullable: true })
-  movie(@Arg("id", () => Int) id: number): Promise<Movie | undefined> {
-    return Movie.findOne(id);
   }
 
   @Mutation(() => MovieResponse)

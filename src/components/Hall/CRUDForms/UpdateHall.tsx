@@ -13,7 +13,7 @@ const UpdateHall = (props: any) => {
 
   const fields: any = [
     {
-      key: 'Name',
+      key: 'name',
       type:'textarea',
       defaultValue: hall.name,
       required: true,

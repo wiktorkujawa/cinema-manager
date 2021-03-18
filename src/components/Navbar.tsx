@@ -65,7 +65,7 @@ export default function WithSubnavigation() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}> */}
             <Link href='/'>
-            <Image src="cinema_logo.png" width="25px" alt="Logo"/>
+            <Image src="/cinema_logo.png" width="25px" alt="Logo"/>
             </Link>
           {/* </Text> */}
 

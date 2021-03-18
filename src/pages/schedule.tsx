@@ -9,7 +9,6 @@ const schedule = () => {
   const [halls, setHalls] = useState([] as any);
 
   useEffect(() => {
-    console.log("change");
     if (loading === false && data) {
       const colors: any = [
         "#FF3333",
@@ -31,6 +30,7 @@ const schedule = () => {
           pushSessions.push({
             id: session.id,
             title: session.title,
+            notes: session.notes,
             startDate: new Date(session.startDate),
             endDate: new Date(session.endDate),
             hallId: o.id,
@@ -56,7 +56,6 @@ const schedule = () => {
         halls={halls}
         refetchSessions={refetchSessions}
       />
-      {/* <Calendar/> */}
     </div>
   );
 };

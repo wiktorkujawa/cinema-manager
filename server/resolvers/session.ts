@@ -18,6 +18,8 @@ class SessionInput {
   @Field()
   title: string;
   @Field()
+  notes: string;
+  @Field()
   hall: string;
   @Field()
   startDate: Date;
@@ -35,6 +37,8 @@ class moveSessionInput {
   hallId: number;
   @Field({nullable: true})
   title: string;
+  @Field({nullable: true})
+  notes: string;
   @Field({nullable: true})
   startDate: Date;
   @Field({nullable: true})
@@ -81,6 +85,7 @@ export class SessionResolver {
       if(can_add){
         const session = new Session();
         session.title=input.title;
+        session.notes=input.notes;
 
         session.startDate=input.startDate;
         
@@ -140,7 +145,8 @@ export class SessionResolver {
       
       console.log(input.hallId);
       const other_sessions = await Session.find({relations:['hall'], where: {
-        hallId: input.hallId || session?.hall.id,
+        hall: {
+          id:input.hallId || session?.hall.id},
         id: Not(input.id)
       },
     });

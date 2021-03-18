@@ -2,6 +2,7 @@ import {
   Box,
   ButtonGroup,
   FormControl,
+  Img,
   // FormErrorMessage,
   // FormLabel,
   // Input,
@@ -47,6 +48,7 @@ type Types =
 interface Props {
   key: string;
   type: Types;
+  id: string;
   defaultValue?: any;
   required?: boolean;
   templateOptions?: {
@@ -54,7 +56,12 @@ interface Props {
     label?: string;
     placeholder?: string;
     required?: boolean;
+    previewImage?:boolean;
   };
+  expressions?:{
+    onFocus?: any;
+    onChange?: any;
+  }
   validators?: {
     min?: number;
     max?: number;
@@ -158,13 +165,27 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
         >
           {fields.map((item) => {
             if (item.type === "text") {
+              if(item.templateOptions?.previewImage){
+                return (
+                  <div key={item.key}>
+                  <Img src={values.Poster}/>
+                  <InputControl
+                    id={item.id}
+                    name={item.key}
+                    label={item.templateOptions?.label}
+                    placeholder={item.templateOptions?.placeholder}
+                  />   
+                  </div>
+                );
+              }
               return (
                 <InputControl
+                  id={item.id}
                   key={item.key}
                   name={item.key}
                   label={item.templateOptions?.label}
                   placeholder={item.templateOptions?.placeholder}
-                />
+                />   
               );
             }
             if (item.type === "range") {
@@ -279,18 +300,20 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
             if (item.type === "select") {
               return (
                 <SelectControl
-                  onFocus={()=> console.log('open')}
-                  onChange={()=>console.log('select')}
+                  onFocus={item.expressions?.onFocus ? () => item.expressions?.onFocus(values.Title): ()=>true}
+                  onChange={(event:any)=>{
+                    item.expressions?.onChange(values, item, event)
+                  }}
                   key={item.key}
                   name={item.key}
                   selectProps={{
                     placeholder: item.templateOptions?.placeholder,
                   }}
                 >
-                  {item.templateOptions?.options?.map((option) => {
+                  {item.templateOptions?.options?.map((option,index) => {
                     return (
-                      <option key={option} value={option}>
-                        {option}
+                      <option onClick={(event)=>console.log(event)} key={index} value={index}>
+                        {`${option.Title}(${option.Year})`}
                       </option>
                     );
                   })}

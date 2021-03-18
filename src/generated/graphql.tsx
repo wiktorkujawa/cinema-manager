@@ -26,7 +26,6 @@ export type Query = {
   sessions?: Maybe<Array<Session>>;
   session?: Maybe<Session>;
   movies?: Maybe<Array<Movie>>;
-  searchMovies?: Maybe<Array<SearchResponse>>;
   movie?: Maybe<Movie>;
 };
 
@@ -37,17 +36,12 @@ export type QueryPostArgs = {
 
 
 export type QueryHallArgs = {
-  id: Scalars['Int'];
+  hallName: Scalars['String'];
 };
 
 
 export type QuerySessionArgs = {
   id: Scalars['Int'];
-};
-
-
-export type QuerySearchMoviesArgs = {
-  movie: Scalars['String'];
 };
 
 
@@ -86,6 +80,7 @@ export type Session = {
   __typename?: 'Session';
   id: Scalars['Float'];
   title: Scalars['String'];
+  notes: Scalars['String'];
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   hall: Hall;
@@ -99,15 +94,6 @@ export type Movie = {
   Year: Scalars['String'];
   Description: Scalars['String'];
   Length: Scalars['Float'];
-  Poster: Scalars['String'];
-};
-
-export type SearchResponse = {
-  __typename?: 'SearchResponse';
-  Title: Scalars['String'];
-  Year: Scalars['String'];
-  imdbID: Scalars['String'];
-  Type: Scalars['String'];
   Poster: Scalars['String'];
 };
 
@@ -126,6 +112,7 @@ export type Mutation = {
   deleteSession: SessionResponse;
   updateSession: Session;
   moveSession: SessionResponse;
+  searchMovies?: Maybe<Array<SearchResponse>>;
   createMovie: MovieResponse;
   deleteMovie: MovieResponse;
   updateMovie: Movie;
@@ -192,6 +179,11 @@ export type MutationUpdateSessionArgs = {
 
 export type MutationMoveSessionArgs = {
   input: MoveSessionInput;
+};
+
+
+export type MutationSearchMoviesArgs = {
+  movie: Scalars['String'];
 };
 
 
@@ -263,6 +255,7 @@ export type SessionError = {
 
 export type SessionInput = {
   title: Scalars['String'];
+  notes: Scalars['String'];
   hall: Scalars['String'];
   startDate: Scalars['DateTime'];
   duration: Scalars['Float'];
@@ -272,8 +265,18 @@ export type MoveSessionInput = {
   id: Scalars['Float'];
   hallId?: Maybe<Scalars['Float']>;
   title?: Maybe<Scalars['String']>;
+  notes?: Maybe<Scalars['String']>;
   startDate?: Maybe<Scalars['DateTime']>;
   endDate?: Maybe<Scalars['DateTime']>;
+};
+
+export type SearchResponse = {
+  __typename?: 'SearchResponse';
+  Title: Scalars['String'];
+  Year: Scalars['String'];
+  imdbID: Scalars['String'];
+  Type: Scalars['String'];
+  Poster: Scalars['String'];
 };
 
 export type MovieResponse = {
@@ -304,9 +307,26 @@ export type HallsQuery = (
     & Pick<Hall, 'id' | 'name'>
     & { sessions: Array<(
       { __typename?: 'Session' }
-      & Pick<Session, 'id' | 'title' | 'startDate' | 'endDate'>
+      & Pick<Session, 'id' | 'title' | 'notes' | 'startDate' | 'endDate'>
     )> }
   )>> }
+);
+
+export type HallQueryVariables = Exact<{
+  hallName: Scalars['String'];
+}>;
+
+
+export type HallQuery = (
+  { __typename?: 'Query' }
+  & { hall?: Maybe<(
+    { __typename?: 'Hall' }
+    & Pick<Hall, 'id' | 'name'>
+    & { sessions: Array<(
+      { __typename?: 'Session' }
+      & Pick<Session, 'id' | 'title' | 'notes' | 'startDate' | 'endDate'>
+    )> }
+  )> }
 );
 
 export type CreateHallMutationVariables = Exact<{
@@ -366,16 +386,16 @@ export type MoviesQuery = (
   )>> }
 );
 
-export type SearchMoviesQueryVariables = Exact<{
+export type SearchMoviesMutationVariables = Exact<{
   movie: Scalars['String'];
 }>;
 
 
-export type SearchMoviesQuery = (
-  { __typename?: 'Query' }
+export type SearchMoviesMutation = (
+  { __typename?: 'Mutation' }
   & { searchMovies?: Maybe<Array<(
     { __typename?: 'SearchResponse' }
-    & Pick<SearchResponse, 'Title' | 'Year' | 'Poster'>
+    & Pick<SearchResponse, 'Title' | 'Year' | 'Poster' | 'imdbID'>
   )>> }
 );
 
@@ -480,7 +500,7 @@ export type SessionsQuery = (
   { __typename?: 'Query' }
   & { sessions?: Maybe<Array<(
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'title' | 'startDate' | 'endDate'>
+    & Pick<Session, 'id' | 'title' | 'notes' | 'startDate' | 'endDate'>
     & { hall: (
       { __typename?: 'Hall' }
       & Pick<Hall, 'name' | 'id'>
@@ -530,7 +550,7 @@ export type UpdateSessionMutation = (
   { __typename?: 'Mutation' }
   & { updateSession: (
     { __typename?: 'Session' }
-    & Pick<Session, 'id' | 'title'>
+    & Pick<Session, 'id' | 'title' | 'notes'>
   ) }
 );
 
@@ -610,6 +630,7 @@ export const HallsDocument = gql`
     sessions {
       id
       title
+      notes
       startDate
       endDate
     }
@@ -641,6 +662,47 @@ export function useHallsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Hall
 export type HallsQueryHookResult = ReturnType<typeof useHallsQuery>;
 export type HallsLazyQueryHookResult = ReturnType<typeof useHallsLazyQuery>;
 export type HallsQueryResult = Apollo.QueryResult<HallsQuery, HallsQueryVariables>;
+export const HallDocument = gql`
+    query Hall($hallName: String!) {
+  hall(hallName: $hallName) {
+    id
+    name
+    sessions {
+      id
+      title
+      notes
+      startDate
+      endDate
+    }
+  }
+}
+    `;
+
+/**
+ * __useHallQuery__
+ *
+ * To run a query within a React component, call `useHallQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHallQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHallQuery({
+ *   variables: {
+ *      hallName: // value for 'hallName'
+ *   },
+ * });
+ */
+export function useHallQuery(baseOptions: Apollo.QueryHookOptions<HallQuery, HallQueryVariables>) {
+        return Apollo.useQuery<HallQuery, HallQueryVariables>(HallDocument, baseOptions);
+      }
+export function useHallLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HallQuery, HallQueryVariables>) {
+          return Apollo.useLazyQuery<HallQuery, HallQueryVariables>(HallDocument, baseOptions);
+        }
+export type HallQueryHookResult = ReturnType<typeof useHallQuery>;
+export type HallLazyQueryHookResult = ReturnType<typeof useHallLazyQuery>;
+export type HallQueryResult = Apollo.QueryResult<HallQuery, HallQueryVariables>;
 export const CreateHallDocument = gql`
     mutation createHall($input: HallInput!) {
   createHall(input: $input) {
@@ -781,40 +843,40 @@ export type MoviesQueryHookResult = ReturnType<typeof useMoviesQuery>;
 export type MoviesLazyQueryHookResult = ReturnType<typeof useMoviesLazyQuery>;
 export type MoviesQueryResult = Apollo.QueryResult<MoviesQuery, MoviesQueryVariables>;
 export const SearchMoviesDocument = gql`
-    query SearchMovies($movie: String!) {
+    mutation searchMovies($movie: String!) {
   searchMovies(movie: $movie) {
     Title
     Year
     Poster
+    imdbID
   }
 }
     `;
+export type SearchMoviesMutationFn = Apollo.MutationFunction<SearchMoviesMutation, SearchMoviesMutationVariables>;
 
 /**
- * __useSearchMoviesQuery__
+ * __useSearchMoviesMutation__
  *
- * To run a query within a React component, call `useSearchMoviesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchMoviesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useSearchMoviesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSearchMoviesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useSearchMoviesQuery({
+ * const [searchMoviesMutation, { data, loading, error }] = useSearchMoviesMutation({
  *   variables: {
  *      movie: // value for 'movie'
  *   },
  * });
  */
-export function useSearchMoviesQuery(baseOptions: Apollo.QueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
-        return Apollo.useQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, baseOptions);
+export function useSearchMoviesMutation(baseOptions?: Apollo.MutationHookOptions<SearchMoviesMutation, SearchMoviesMutationVariables>) {
+        return Apollo.useMutation<SearchMoviesMutation, SearchMoviesMutationVariables>(SearchMoviesDocument, baseOptions);
       }
-export function useSearchMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchMoviesQuery, SearchMoviesQueryVariables>) {
-          return Apollo.useLazyQuery<SearchMoviesQuery, SearchMoviesQueryVariables>(SearchMoviesDocument, baseOptions);
-        }
-export type SearchMoviesQueryHookResult = ReturnType<typeof useSearchMoviesQuery>;
-export type SearchMoviesLazyQueryHookResult = ReturnType<typeof useSearchMoviesLazyQuery>;
-export type SearchMoviesQueryResult = Apollo.QueryResult<SearchMoviesQuery, SearchMoviesQueryVariables>;
+export type SearchMoviesMutationHookResult = ReturnType<typeof useSearchMoviesMutation>;
+export type SearchMoviesMutationResult = Apollo.MutationResult<SearchMoviesMutation>;
+export type SearchMoviesMutationOptions = Apollo.BaseMutationOptions<SearchMoviesMutation, SearchMoviesMutationVariables>;
 export const CreateMovieDocument = gql`
     mutation createMovie($input: MovieInput!) {
   createMovie(input: $input) {
@@ -1051,6 +1113,7 @@ export const SessionsDocument = gql`
   sessions {
     id
     title
+    notes
     startDate
     endDate
     hall {
@@ -1158,6 +1221,7 @@ export const UpdateSessionDocument = gql`
   updateSession(id: $id, input: $input) {
     id
     title
+    notes
   }
 }
     `;
