@@ -12,6 +12,19 @@ query Sessions {
   }
 }
 
+query SessionsWithMovie($title: String!) {
+  sessionsWithMovie(title: $title){
+    id
+    title
+    notes
+    startDate
+    endDate
+    hall{
+      name
+    }
+  }
+}
+
 mutation createSession($input: SessionInput!) {
   createSession(input: $input) {
     errors{

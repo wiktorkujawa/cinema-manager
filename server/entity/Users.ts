@@ -3,7 +3,7 @@ import {Entity, Column, BaseEntity, PrimaryGeneratedColumn} from "typeorm";
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export class Users extends BaseEntity {
 
     @Field()
     @PrimaryGeneratedColumn()
@@ -14,7 +14,7 @@ export class User extends BaseEntity {
     email: string;
 
     @Field()
-    @Column()
+    @Column({nullable:true})
     password: string;
 
     @Field()
@@ -22,15 +22,15 @@ export class User extends BaseEntity {
     displayName: string;
 
     @Field()
-    @Column()
+    @Column({nullable:true})
     image: string;
 
     @Field()
-    @Column()
+    @Column({nullable:true})
     firstName: string;
 
     @Field()
-    @Column()
+    @Column({nullable:true})
     lastName: string;
 
     @Field()
@@ -38,10 +38,10 @@ export class User extends BaseEntity {
     active: boolean;
 
     @Field()
-    @Column()
+    @Column({nullable:true})
     activeToken: string;
 
     @Field()
-    @Column()
-    activeExpires: number;
+    @Column({nullable:true})
+    activeExpires: Date;
 }

@@ -1,5 +1,5 @@
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver } from "type-graphql";
-import { User } from "../entity/User";
+import { Users } from "../entity/Users";
 // import passport from 'passport';
 // import passportLocal from 'passport-local';
 // const LocalStrategy = passportLocal.Strategy;
@@ -42,17 +42,17 @@ class UserResponse {
 }
 
 
-@Resolver(User)
+@Resolver(Users)
 export class UserResolver {
 
-  @Query(() => User, { nullable: true })
-    users(): Promise<User[] | undefined>  {
+  @Query(() => Users, { nullable: true })
+    users(): Promise<Users[] | undefined>  {
       // const postRepository = getRepository(Post);
-      return User.find({});
+      return Users.find({});
     }
 
-  @Query(() => User, { nullable: true })
-    async currentUser(@Ctx() context: any): Promise<User | null>  {
+  @Query(() => Users, { nullable: true })
+    async currentUser(@Ctx() context: any): Promise<Users | null>  {
       return context.getUser();
     }
 
@@ -83,8 +83,8 @@ export class UserResolver {
       if (errors.length > 0) {
         return {errors: errors};
       } else {
-        const user = await User.findOne({ email: email });
-          if (user) {
+        const users = await Users.findOne({ email: email });
+          if (users) {
             errors.push({ 
               field: 'email',
               message: 'Email already exists' });
@@ -97,13 +97,13 @@ export class UserResolver {
                     console.log(err);
                   }
                   const activeToken = Date.now()+buf.toString('hex');
-                  User.create({
+                  Users.create({
                     email: email,
                     displayName: displayName,
                     password: bcrypt.hashSync(password,10),
                     active: false,
                     activeToken: activeToken,
-                    activeExpires: Date.now() + 24 * 3600 * 1000
+                    activeExpires: new Date(Date.now() + 24 * 3600 * 1000)
                   }).save();
 
                   let gmailService = new GMailService();

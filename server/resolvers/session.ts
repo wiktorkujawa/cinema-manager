@@ -66,6 +66,13 @@ export class SessionResolver {
     return Session.find({ relations:["hall"]});
   }
 
+  @Query(() => [Session], { nullable: true })
+  sessionsWithMovie(@Arg("title", () => String) title: string): Promise<Session[] | undefined>  {
+    return Session.find({ relations:["hall"], where:{
+      title: title
+    }});
+  }
+
   @Query(() => Session, { nullable: true })
   session(@Arg("id", () => Int) id: number): Promise<Session | undefined> {
     return Session.findOne(id, {relations:["hall"]});

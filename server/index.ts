@@ -5,13 +5,13 @@ import next from "next";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { PostResolver } from "./resolvers/post";
-import { UserResolver } from "./resolvers/user";
+import { UserResolver } from "./resolvers/users";
 import passport from "passport";
 import session from "express-session";
 require("./modules/passport/google")(passport);
 require("./modules/passport/local")(passport);
 import { buildContext } from 'graphql-passport';
-import { User } from './entity/User'; 
+import { Users } from './entity/Users'; 
 import { activateAccount } from "./modules/activateAccount";
 import { HallResolver } from "./resolvers/hall";
 import { SessionResolver } from "./resolvers/session";
@@ -81,7 +81,7 @@ const port = process.env.PORT || 3000;
         validate: false,
       }),
       context: ({ req, res }) => 
-        buildContext({ req, res, User })
+        buildContext({ req, res, Users })
     });
 
     apolloServer.applyMiddleware({

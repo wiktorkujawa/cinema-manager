@@ -1,6 +1,6 @@
 import passportGoogle from 'passport-google-oauth20';
 const GoogleStrategy = passportGoogle.Strategy;
-import {User} from "../../entity/User";
+import {Users} from "../../entity/Users";
 
 import dotenv from "dotenv";
 import path from 'path';
@@ -26,13 +26,13 @@ module.exports = (passport: any) => {
           }
 
           try {
-            let user = await User.findOne({ email: profile.emails[0].value })
+            let users = await Users.findOne({ email: profile.emails[0].value })
 
-            if (user) {
-              done(null, user)
+            if (users) {
+              done(null, users)
             } else {
-              user = await User.create(newUser).save();
-              done(null, user)
+              users = await Users.create(newUser).save();
+              done(null, users)
             }
           } catch (err) {
             console.error(err)
@@ -41,13 +41,13 @@ module.exports = (passport: any) => {
       )
     )
 
-    passport.serializeUser( function (user: any, done: any) {
-      done(null, user.email);
+    passport.serializeUser( function (users: any, done: any) {
+      done(null, users.email);
     });
     
     passport.deserializeUser( async (email: any, done: any) => {
-      User.findOne({email: email})
-      .then(user => done(null, user))
+      Users.findOne({email: email})
+      .then(users => done(null, users))
       .catch(error => done(error ,false))
     });
     

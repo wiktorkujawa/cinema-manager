@@ -67,7 +67,7 @@ const Register = () => {
           <ModalHeader>Register</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit} errors={data?.register.errors!.map(({message}) => <div> {message} </div>)}/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors={data?.register.errors!.map(({message},index) => <div key={index}> {message} </div>)}/>
           </ModalBody>
         </ModalContent>
       </Modal>
