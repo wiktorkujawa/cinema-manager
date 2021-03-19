@@ -24,6 +24,7 @@ export type Query = {
   halls?: Maybe<Array<Hall>>;
   hall?: Maybe<Hall>;
   sessions?: Maybe<Array<Session>>;
+  sessionsWithMovie?: Maybe<Array<Session>>;
   session?: Maybe<Session>;
   movies?: Maybe<Array<Movie>>;
   movie?: Maybe<Movie>;
@@ -40,13 +41,18 @@ export type QueryHallArgs = {
 };
 
 
+export type QuerySessionsWithMovieArgs = {
+  title: Scalars['String'];
+};
+
+
 export type QuerySessionArgs = {
   id: Scalars['Int'];
 };
 
 
 export type QueryMovieArgs = {
-  id: Scalars['Int'];
+  Title: Scalars['String'];
 };
 
 export type Post = {
@@ -384,6 +390,19 @@ export type MoviesQuery = (
   )>> }
 );
 
+export type MovieQueryVariables = Exact<{
+  Title: Scalars['String'];
+}>;
+
+
+export type MovieQuery = (
+  { __typename?: 'Query' }
+  & { movie?: Maybe<(
+    { __typename?: 'Movie' }
+    & Pick<Movie, 'id' | 'Title' | 'Length' | 'Description' | 'Poster'>
+  )> }
+);
+
 export type SearchMoviesMutationVariables = Exact<{
   movie: Scalars['String'];
 }>;
@@ -502,6 +521,23 @@ export type SessionsQuery = (
     & { hall: (
       { __typename?: 'Hall' }
       & Pick<Hall, 'name' | 'id'>
+    ) }
+  )>> }
+);
+
+export type SessionsWithMovieQueryVariables = Exact<{
+  title: Scalars['String'];
+}>;
+
+
+export type SessionsWithMovieQuery = (
+  { __typename?: 'Query' }
+  & { sessionsWithMovie?: Maybe<Array<(
+    { __typename?: 'Session' }
+    & Pick<Session, 'id' | 'title' | 'notes' | 'startDate' | 'endDate'>
+    & { hall: (
+      { __typename?: 'Hall' }
+      & Pick<Hall, 'name'>
     ) }
   )>> }
 );
@@ -839,6 +875,43 @@ export function useMoviesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Mov
 export type MoviesQueryHookResult = ReturnType<typeof useMoviesQuery>;
 export type MoviesLazyQueryHookResult = ReturnType<typeof useMoviesLazyQuery>;
 export type MoviesQueryResult = Apollo.QueryResult<MoviesQuery, MoviesQueryVariables>;
+export const MovieDocument = gql`
+    query Movie($Title: String!) {
+  movie(Title: $Title) {
+    id
+    Title
+    Length
+    Description
+    Poster
+  }
+}
+    `;
+
+/**
+ * __useMovieQuery__
+ *
+ * To run a query within a React component, call `useMovieQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMovieQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMovieQuery({
+ *   variables: {
+ *      Title: // value for 'Title'
+ *   },
+ * });
+ */
+export function useMovieQuery(baseOptions: Apollo.QueryHookOptions<MovieQuery, MovieQueryVariables>) {
+        return Apollo.useQuery<MovieQuery, MovieQueryVariables>(MovieDocument, baseOptions);
+      }
+export function useMovieLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MovieQuery, MovieQueryVariables>) {
+          return Apollo.useLazyQuery<MovieQuery, MovieQueryVariables>(MovieDocument, baseOptions);
+        }
+export type MovieQueryHookResult = ReturnType<typeof useMovieQuery>;
+export type MovieLazyQueryHookResult = ReturnType<typeof useMovieLazyQuery>;
+export type MovieQueryResult = Apollo.QueryResult<MovieQuery, MovieQueryVariables>;
 export const SearchMoviesDocument = gql`
     mutation searchMovies($movie: String!) {
   searchMovies(movie: $movie) {
@@ -1145,6 +1218,46 @@ export function useSessionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<S
 export type SessionsQueryHookResult = ReturnType<typeof useSessionsQuery>;
 export type SessionsLazyQueryHookResult = ReturnType<typeof useSessionsLazyQuery>;
 export type SessionsQueryResult = Apollo.QueryResult<SessionsQuery, SessionsQueryVariables>;
+export const SessionsWithMovieDocument = gql`
+    query SessionsWithMovie($title: String!) {
+  sessionsWithMovie(title: $title) {
+    id
+    title
+    notes
+    startDate
+    endDate
+    hall {
+      name
+    }
+  }
+}
+    `;
+
+/**
+ * __useSessionsWithMovieQuery__
+ *
+ * To run a query within a React component, call `useSessionsWithMovieQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSessionsWithMovieQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSessionsWithMovieQuery({
+ *   variables: {
+ *      title: // value for 'title'
+ *   },
+ * });
+ */
+export function useSessionsWithMovieQuery(baseOptions: Apollo.QueryHookOptions<SessionsWithMovieQuery, SessionsWithMovieQueryVariables>) {
+        return Apollo.useQuery<SessionsWithMovieQuery, SessionsWithMovieQueryVariables>(SessionsWithMovieDocument, baseOptions);
+      }
+export function useSessionsWithMovieLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SessionsWithMovieQuery, SessionsWithMovieQueryVariables>) {
+          return Apollo.useLazyQuery<SessionsWithMovieQuery, SessionsWithMovieQueryVariables>(SessionsWithMovieDocument, baseOptions);
+        }
+export type SessionsWithMovieQueryHookResult = ReturnType<typeof useSessionsWithMovieQuery>;
+export type SessionsWithMovieLazyQueryHookResult = ReturnType<typeof useSessionsWithMovieLazyQuery>;
+export type SessionsWithMovieQueryResult = Apollo.QueryResult<SessionsWithMovieQuery, SessionsWithMovieQueryVariables>;
 export const CreateSessionDocument = gql`
     mutation createSession($input: SessionInput!) {
   createSession(input: $input) {

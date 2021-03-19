@@ -55,7 +55,7 @@ const UpdateMovie = (props: any) => {
 
   const onSubmit = (values: any) => {
     const { Length, ...newValues } = values;
-    return updateMovie({ variables: { id: movie.id, input: {Length: Length,
+    return updateMovie({ variables: { id: movie.id, input: {Length: parseInt(Length),
       ...newValues} }, refetchQueries: refetchMovies });
   };
 

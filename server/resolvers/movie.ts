@@ -57,8 +57,8 @@ export class MovieResolver {
   }
 
   @Query(() => Movie, { nullable: true })
-  movie(@Arg("id", () => Int) id: number): Promise<Movie | undefined> {
-    return Movie.findOne(id);
+  movie(@Arg("Title", () => String) Title: string): Promise<Movie | undefined> {
+    return Movie.findOne({ Title: Title});
   }
 
   @Mutation(() => [SearchResponse], { nullable: true })

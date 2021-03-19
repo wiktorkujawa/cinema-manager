@@ -8,6 +8,16 @@ query Movies {
   }
 }
 
+query Movie($Title: String!) {
+  movie(Title: $Title) {
+    id
+    Title
+    Length
+    Description
+    Poster
+  }
+}
+
 mutation searchMovies($movie: String!) {
   searchMovies(movie: $movie) {
     Title

@@ -1,10 +1,10 @@
 import { SimpleGrid } from '@chakra-ui/react';
 import React from 'react'
-import AddMovie from '../components/Movie/CRUDForms/AddMovie';
-import Item from '../components/Movie/Item';
-import { useMoviesQuery } from '../generated/graphql'
+import AddMovie from '../../components/Movie/CRUDForms/AddMovie';
+import Item from '../../components/Movie/Item';
+import { useMoviesQuery } from '../../generated/graphql'
 
-const movies = () => {
+const index = () => {
 
   const { data, refetch: refetchMovies } = useMoviesQuery();
 
@@ -26,4 +26,4 @@ const movies = () => {
   )
 }
 
-export default movies
+export default index

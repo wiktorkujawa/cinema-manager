@@ -9,7 +9,7 @@ const AddMovie = (props: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { refetchMovies } = props;
-  const [createMovie] = useCreateMovieMutation();
+  const [createMovie,{data:errors}] = useCreateMovieMutation();
 
   const [searchMovies, {data}] = useSearchMoviesMutation();
 
@@ -68,7 +68,7 @@ const AddMovie = (props: any) => {
       type:'select',
       required: true,
       templateOptions:{
-        label:'Movie description',
+        label:'Choose movie',
         optionLabel: onLabel,
         options: data?.searchMovies
       },
@@ -97,7 +97,7 @@ const AddMovie = (props: any) => {
           <ModalHeader>Movie</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors={errors?.createMovie.errors?.message}/>
           </ModalBody>
         </ModalContent>
       </Modal>

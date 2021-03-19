@@ -19,12 +19,13 @@ const AddHall = (props: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { refetchHalls } = props;
-  const [createHall] = useCreateHallMutation();
+  const [createHall, {data}] = useCreateHallMutation();
 
   const onSubmit = (values: any) => {
-    return createHall({ variables: { input: values }, refetchQueries: refetchHalls });
+    return createHall({ variables: { input: values },  refetchQueries: refetchHalls });
   };
 
+  // console.log(error);
 
   return (
     <>
@@ -36,7 +37,7 @@ const AddHall = (props: any) => {
           <ModalHeader>Hall</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors={data?.createHall.errors?.message}/>
           </ModalBody>
         </ModalContent>
       </Modal>
