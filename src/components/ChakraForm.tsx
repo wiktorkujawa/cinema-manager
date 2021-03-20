@@ -153,7 +153,7 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
       onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit, values }) => (
+      {({ handleSubmit, values, setFieldValue }) => (
         <Box
           borderWidth="1px"
           rounded="lg"
@@ -302,8 +302,12 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
               return (
                 <SelectControl
                   onFocus={item.expressions?.onFocus ? () => item.expressions?.onFocus(values.Title): ()=>true}
-                  onChange={(event:any)=>{
-                    item.expressions?.onChange(values, item, event)
+                  onChange={async (event:any)=>{
+                    const changeFields = await item.expressions?.onChange(item, event);
+                    changeFields.map( (change:any) =>{
+                      let key = Object.keys(change)[0];
+                      setFieldValue(key, change[key]);
+                    });
                   }}
                   key={item.key}
                   name={item.key}

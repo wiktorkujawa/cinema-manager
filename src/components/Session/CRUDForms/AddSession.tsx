@@ -19,10 +19,15 @@ const AddSession = (props: any) => {
   
   const onLabel = (option:any) => option.Title
  
-  const onChange = (values:any, item:any, event:any) =>{
-
-    values.title = `${item.templateOptions?.options![event.target.value].Title}`;
-    values.duration = item.templateOptions?.options![event.target.value].Length;
+  const onChange = (item:any, event:any) =>{
+    
+    return [
+      {
+        title: item.templateOptions?.options![event.target.value].Title
+      },
+      {
+        duration:item.templateOptions?.options![event.target.value].Length
+      }]
   }
 
   const fields: any = [

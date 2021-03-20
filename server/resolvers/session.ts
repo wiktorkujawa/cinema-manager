@@ -149,8 +149,6 @@ export class SessionResolver {
       }};
 
       
-      
-      console.log(input.hallId);
       const other_sessions = await Session.find({relations:['hall'], where: {
         hall: {
           id:input.hallId || session?.hall.id},
@@ -166,11 +164,6 @@ export class SessionResolver {
       }
     })
 
-
-    console.log(input);
-
-    console.log(session);
-    console.log(other_sessions);
 
       if(can_move){
         Object.assign(session, {...input,

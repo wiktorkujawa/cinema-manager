@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "watch": "tsc -w --project tsconfig.server.json",
-    "dev": "NODE_ENV=production nodemon dist/index.js",
+    "dev": "nodemon dist/index.js",
     "build:next": "next build",
     "build:server": "tsc --project tsconfig.server.json",
     "build": "yarn build:next && yarn build:server",
