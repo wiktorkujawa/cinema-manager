@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import {
+  // useCurrentUserQuery,
   useDeleteHallMutation,
   useDeleteSessionMutation,
 } from "../../generated/graphql";
@@ -21,7 +22,9 @@ import moment from "moment";
 
 const Item = (props: any) => {
   const base = useRouter();
-  const { hall, refetchHalls } = props;
+  const { hall, refetchHalls, user } = props;
+
+  // const { data } = useCurrentUserQuery();
 
   const [deleteHall] = useDeleteHallMutation();
 
@@ -42,6 +45,7 @@ const Item = (props: any) => {
           <p>{hall.name}</p>
         </Link>
         <Button
+          disabled={!user}
           position="absolute"
           right="0"
           colorScheme="red"
@@ -76,6 +80,7 @@ const Item = (props: any) => {
                   </Td>
                   <Td>
                     <Button
+                    disabled={!user}
                      size="md"
                      colorScheme="orange"
                       onClick={() =>
@@ -94,7 +99,7 @@ const Item = (props: any) => {
           </Tbody>
         </Table>
       ) : (
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" minHeight="24" justifyContent="center" alignItems="center">
           No sessions
         </Box>
       )}
@@ -104,8 +109,14 @@ const Item = (props: any) => {
         display="flex"
         justifyContent="space-between"
       >
-        <UpdateHall refetchHalls={refetchHalls} hall={hall} />
-        <AddSession refetchHalls={refetchHalls} hall_name={hall.name} />{" "}
+        {
+          user ?
+          <>
+            <UpdateHall refetchHalls={refetchHalls} hall={hall} />
+            <AddSession refetchHalls={refetchHalls} hall_name={hall.name} />
+          </> :
+          <Box mx="auto">Sign in to modify hall and it's repertoir</Box>
+        }
       </Box>
     </Box>
   );

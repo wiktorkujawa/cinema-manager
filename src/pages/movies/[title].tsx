@@ -43,22 +43,21 @@ const title = () => {
     <AccordionPanel pb={4}>
       <Divider/>
       <Heading textAlign="center" my="5">{data.movie.Title}</Heading>
-      <Img src={data.movie.Poster} my="5" width={["xs", "container.sm", "container.md", "container.lg","container.xl"]}/>
-            <Text>{data.movie.Description}</Text>
+      <Img borderRadius="base" mx="auto" src={data.movie.Poster} my="5" width={["xs", "sm", "container.sm", "container.md","container.lg"]}/>
+            <Text background="white" mx="auto" p="5" borderRadius="base" width={["xs", "sm", "container.sm", "container.md","container.lg"]}>{data.movie.Description}</Text>
     </AccordionPanel>
   </AccordionItem>
 
-  <AccordionItem width={["xs", "container.sm", "container.md", "container.lg","container.xl"]}>
+  <AccordionItem isDisabled={sessions.sessionsWithMovie.length == 0} width={["xs", "container.sm", "container.md", "container.lg","container.xl"]}>
     <h2>
       <AccordionButton>
         <Box flex="1" textAlign="left">
-        <Text fontSize="lg">Movie schedules</Text>
+        <Text fontSize="lg">{sessions.sessionsWithMovie.length == 0?'No sessions':'Movie schedules'}</Text>
         </Box>
         <AccordionIcon />
       </AccordionButton>
     </h2>
     <AccordionPanel pb={4}>
-    {sessions.sessionsWithMovie.length != 0 ? (
       <Table size="sm" variant="striped">
         <Thead>
           <Tr>
@@ -99,11 +98,7 @@ const title = () => {
           })}
         </Tbody>
       </Table>
-    ) : (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        No sessions
-      </Box>
-    )}
+
     </AccordionPanel>
   </AccordionItem>
 </Accordion>
