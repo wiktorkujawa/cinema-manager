@@ -10,10 +10,12 @@ import {
 } from "../../generated/graphql";
 import UpdateMovie from "./CRUDForms/UpdateMovie";
 import { useRouter } from "next/router";
+import styles from '../../assets/styles.module.scss'
 
 const Item = (props: any) => {
   const base = useRouter();
-  const { movie, refetchMovies } = props;
+  const { movie, refetchMovies, user } = props;
+
 
   const [deleteMovie] = useDeleteMovieMutation();
 
@@ -22,19 +24,19 @@ const Item = (props: any) => {
 
   return (
     <Box display="grid" gridTemplateRows="auto 1fr auto">
-      {/* </Box> */}
       <Box
         display="flex"
         bg="yellow.500"
         justifyContent="center"
         position="relative"
       >
-        <Link margin="2" href={`${base.asPath}/${movie.Title}`}>
-          <p>{movie.Title}</p>
+        <Link margin="2" className={styles.movieTitle} href={`${base.asPath}/${movie.Title}`}>
+          <p className="text-center">{movie.Title}</p>
         </Link>
         <Button
           position="absolute"
           right="0"
+          disabled={user? false: true}
           colorScheme="red"
           size="md"
           onClick={onDelete}
@@ -53,7 +55,11 @@ const Item = (props: any) => {
         display="flex"
         justifyContent="center"
       >
-        <UpdateMovie refetchHalls={refetchMovies} movie={movie} />
+        {
+          user ?
+          <UpdateMovie refetchHalls={refetchMovies} movie={movie} />
+          : <div>Sign In to update</div>
+        }
       </Box>
       
     </Box>
