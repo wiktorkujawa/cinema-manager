@@ -23,9 +23,12 @@ const AddMovie = (props: any) => {
 
   const onLabel = (option:any) => `${option.Title} (${option.Year})`
 
-  const onChange = (values:any, item:any, event:any) =>{
-    values.Title = `${item.templateOptions?.options![event.target.value].Title} (${item.templateOptions?.options![event.target.value].Year})`;
-    values.Poster = item.templateOptions?.options![event.target.value].Poster;
+  const onChange = (item:any, event:any) =>{
+    return [{
+      Title:`${item.templateOptions?.options![event.target.value].Title} (${item.templateOptions?.options![event.target.value].Year})`},
+      {Poster: item.templateOptions?.options![event.target.value].Poster}
+    ]
+
   }
 
 

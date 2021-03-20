@@ -25,10 +25,6 @@ const title = () => {
     return <div>loading...</div>
   }
 
-  console.log(sessions?.sessionsWithMovie);
-  // sessions.data.sessionsWithMovie.refe
-
-  console.log(data.movie);
   return (
     <Accordion defaultIndex={[0]} allowMultiple m="10" background="gray.300">
   <AccordionItem width={["xs", "container.sm", "container.md", "container.lg","container.xl"]}>
