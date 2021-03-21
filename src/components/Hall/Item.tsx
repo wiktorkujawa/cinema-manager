@@ -18,6 +18,7 @@ import UpdateHall from "./CRUDForms/UpdateHall";
 import { useRouter } from "next/router";
 import AddSession from "../Session/CRUDForms/AddSession";
 import moment from "moment";
+import UpdateSession from "../Session/CRUDForms/UpdateSession";
 
 const Item = (props: any) => {
   const base = useRouter();
@@ -79,8 +80,8 @@ const Item = (props: any) => {
     
                 </Tr>
                 <Tr borderBottom="solid 2px" >
-                  <Td>Remove</Td>
-                  <Td>Session</Td>
+                  <Td> <b> Modify:</b></Td>
+                  <Td><UpdateSession user={user} session={session} refetchHalls={refetchHalls} hall_id={hall.id}/></Td>
                   <Td>
                   <Button
                     disabled={!user}

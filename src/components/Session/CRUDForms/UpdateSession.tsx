@@ -1,40 +1,30 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react';
 import React from 'react'
-import { useCreateSessionMutation, useMoviesQuery } from '../../../generated/graphql';
+import { useMoveSessionMutation, useHallsQuery } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
 
 
 
-const AddSession = (props: any) => {
-  const { data } = useMoviesQuery();
+const UpdateSession = (props: any) => {
+  const { data } = useHallsQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [createSession, {data:errors}] = useCreateSessionMutation();
+  const [moveSession, {data:errors}] = useMoveSessionMutation();
    
 
-  if(!data?.movies){
+  if(!data?.halls){
     return <div>loading...</div>
   }
 
+  const onLabel = (option:any) => option.name;
 
-  
-  const onLabel = (option:any) => option.Title
- 
-  const onChange = (item:any, event:any) =>{
-    
-    return [
-      {
-        title: item.templateOptions?.options![event.target.value].Title
-      },
-      {
-        duration:item.templateOptions?.options![event.target.value].Length
-      }]
-  }
+  const { refetchSessions, session, hall_id, user } = props;
 
   const fields: any = [
     {
       key: 'title',
       type:'text',
       id:'title',
+      defaultValue: session.title,
       required: true,
       templateOptions:{
         label:'Session title'
@@ -43,6 +33,7 @@ const AddSession = (props: any) => {
     {
       key: 'notes',
       type:'textarea',
+      defaultValue: session.notes,
       required: true,
       templateOptions:{
         label:'Notes about Session'
@@ -52,50 +43,56 @@ const AddSession = (props: any) => {
       key: 'startDate',
       type:'datetime',
       required: true,
+      defaultValue: session.startDate,
       templateOptions:{
         label:'Session start'
       }
     },
     {
-      key: 'duration',
-      type:'number',
-      id:'duration',
+      key: 'endDate',
+      type:'datetime',
+      defaultValue: session.endDate,
       required: true,
       templateOptions:{
-        label:'Session length'
+        label:'Session end'
       }
     },
     {
-      key: 'search',
+      key: 'hall',
       type:'select',
       required: true,
       templateOptions:{
-        label:'Choose Movie',
-        options: data.movies,
+        label:'Hall',
+        options: data.halls,
         optionLabel: onLabel
-      },
-      expressions:{
-        onChange: onChange
       }
     }
   
   ];
 
-  const { refetchSessions, hall_name } = props;
-
+  
+console.log(hall_id);
 
   const onSubmit = (values: any) => {
-    let { search, ...newValues} = values;
-    newValues.duration=parseInt(values.duration);
-    return createSession({ variables: { input: {
-      hall: hall_name,
-      ...newValues} }, refetchQueries: refetchSessions });
+    
+    const { hall, ...input} = values;
+    const new_hall_id = data!.halls![hall].id;
+
+    return moveSession({variables:{
+      input: {
+        id: parseInt(session.id),
+        hallId: new_hall_id,
+        ...input
+      }
+    }, refetchQueries: refetchSessions
+  })
+
   };
 
 
   return (
     <>
-    <Button size='sm' onClick={onOpen}>Add Session</Button>
+    <Button size='sm' disabled={!user} onClick={onOpen}>Update Session</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -103,7 +100,7 @@ const AddSession = (props: any) => {
           <ModalHeader>Session</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit} errors={errors?.createSession.errors?.message}/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors={errors?.moveSession.errors?.message}/>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -111,4 +108,4 @@ const AddSession = (props: any) => {
   )
 }
 
-export default AddSession
+export default UpdateSession

@@ -262,7 +262,7 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
                     <div>
                       <input
                         className="mt-2 btn btn-outline-dark"
-                        defaultValue={new Date().toISOString().slice(0, 10)}
+                        defaultValue={item.defaultValue.slice(0, 10) || new Date().toISOString().slice(0, 10)}
                         id={item.key}
                         type="date"
                         onChange={(event) => {
@@ -286,7 +286,7 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
                     <div>
                       <input
                         className="mt-2 btn btn-outline-dark"
-                        defaultValue={new Date().toISOString().slice(0, 16)}
+                        defaultValue={item.defaultValue.slice(0, 16) || new Date().toISOString().slice(0, 16)}
                         id={item.key}
                         type="datetime-local"
                         onChange={(event) => {
@@ -302,13 +302,13 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
               return (
                 <SelectControl
                   onFocus={item.expressions?.onFocus ? () => item.expressions?.onFocus(values.Title): ()=>true}
-                  onChange={async (event:any)=>{
+                  onChange={item.expressions?.onChange? async (event:any)=>{
                     const changeFields = await item.expressions?.onChange(item, event);
                     changeFields.map( (change:any) =>{
                       let key = Object.keys(change)[0];
                       setFieldValue(key, change[key]);
                     });
-                  }}
+                  }: ()=> null}
                   key={item.key}
                   name={item.key}
                   label={item.templateOptions?.label}

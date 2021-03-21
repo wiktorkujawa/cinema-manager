@@ -58,7 +58,7 @@ const Item = (props: any) => {
         {
           user ?
           <UpdateMovie refetchHalls={refetchMovies} movie={movie} />
-          : <div>Sign In to update</div>
+          : <Box mx="auto">Sign in to modify movie</Box>
         }
       </Box>
       
