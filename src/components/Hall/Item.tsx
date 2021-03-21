@@ -9,7 +9,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { Fragment } from "react";
 import {
   // useCurrentUserQuery,
   useDeleteHallMutation,
@@ -34,7 +34,7 @@ const Item = (props: any) => {
     deleteHall({ variables: { id: hall.id }, refetchQueries: refetchHalls });
 
   return (
-    <Box margin="5" display="grid" gridTemplateRows="auto 1fr auto">
+    <Box display="grid" gridTemplateRows="auto 1fr auto">
       <Box
         display="flex"
         bg="yellow.500"
@@ -63,14 +63,15 @@ const Item = (props: any) => {
               <Th>Name</Th>
               <Th>Start</Th>
               <Th>End</Th>
-              <Th>Remove</Th>
+              {/* <Th>Remove</Th> */}
             </Tr>
           </Thead>
 
           <Tbody>
             {hall.sessions.map((session: any) => {
               return (
-                <Tr key={session.id}>
+                <Fragment key={session.id}>
+                <Tr>
                   <Td>{session.title}</Td>
                   <Td>
                     {moment(session.startDate).format("MMMM Do YYYY, h:mm a")}
@@ -78,8 +79,8 @@ const Item = (props: any) => {
                   <Td>
                     {moment(session.endDate).format("MMMM Do YYYY, h:mm a")}
                   </Td>
-                  <Td>
-                    <Button
+                  {/* <Td> */}
+                    {/* <Button
                     disabled={!user}
                      size="md"
                      colorScheme="orange"
@@ -91,9 +92,31 @@ const Item = (props: any) => {
                       }
                     >
                       X
-                    </Button>
-                  </Td>
+                    </Button> */}
+                  {/* </Td> */}
                 </Tr>
+                <Tr borderBottom="solid 2px" >
+                  <Td>Remove</Td>
+                  <Td>Session</Td>
+                  <Td>
+                  <Button
+                    disabled={!user}
+                     size="xs"
+                     colorScheme="orange"
+                      onClick={() =>
+                        deleteSession({
+                          variables: { id: session.id },
+                          refetchQueries: refetchHalls,
+                        })
+                      }
+                    >
+                      X
+                    </Button>
+                    </Td>
+                </Tr>
+                
+
+                </Fragment>
               );
             })}
           </Tbody>

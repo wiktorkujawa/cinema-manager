@@ -18,22 +18,23 @@ const Halls = () => {
   }
   
   return (
-    <>
+    <Box display="block" textAlign="center" margin="auto" marginBottom="40">
+      {
+      user?.currentUser?
+      <AddHall refetchHalls={refetchHalls}/>
+      :
+      <Box mt="10" p="5" background="twitter.500" borderRadius="base">Sign in to add Hall</Box>
+    }
 
-    <SimpleGrid columns={[1,1,2,3,4]} spacing={[4,8,12,15]} margin={[5,10,15,20]}>
+    <SimpleGrid columns={[1,1,2,3,4]} spacing={[2,8,12,15]} marginX={[1,10,15,20]}>
     {
       data.halls.map(item => {
         return <Item key={item.id} hall={item} user={user?.currentUser} refetchHalls={refetchHalls}/>
       })
     }
     </SimpleGrid>
-    {
-      user?.currentUser?
-      <AddHall refetchHalls={refetchHalls}/>
-      :
-      <Box mb="10" p="5" background="twitter.500" borderRadius="base">Sign in to add Hall</Box>
-    }
-    </>
+    
+    </Box>
   )
 }
 

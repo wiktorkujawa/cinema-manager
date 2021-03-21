@@ -106,7 +106,7 @@ export class SessionResolver {
         }};
       }
       return {errors:{
-        message: `Cant add session to ${input.hall} `
+        message: `Cant add session to ${input.hall}. Hall is already booked `
       }};
       
     }

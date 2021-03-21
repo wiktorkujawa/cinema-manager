@@ -87,7 +87,7 @@ export default function WithSubnavigation() {
           <Register/>
           </>
           :<>
-          <div>{data?.currentUser?.email}</div>
+          <Text display={['none','block']}>{data?.currentUser?.email}</Text>
           <Button
             as={'a'}
             fontSize={'sm'}
