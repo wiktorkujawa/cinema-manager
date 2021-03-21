@@ -81,8 +81,8 @@ const Item = (props: any) => {
                 </Tr>
                 <Tr borderBottom="solid 2px" >
                   <Td> <b> Modify:</b></Td>
-                  <Td><UpdateSession user={user} session={session} refetchHalls={refetchHalls} hall_id={hall.id}/></Td>
-                  <Td>
+                  <Td m="auto" textAlign="center" ><UpdateSession user={user} session={session} refetchHalls={refetchHalls} hall_id={hall.id}/></Td>
+                  <Td m="auto" textAlign="center">
                   <Button
                     disabled={!user}
                      size="xs"

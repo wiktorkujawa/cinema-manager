@@ -2,6 +2,7 @@ import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, 
 import React from 'react'
 import { useMoveSessionMutation, useHallsQuery } from '../../../generated/graphql';
 import ChakraForm from '../../ChakraForm';
+import { EditIcon } from '@chakra-ui/icons'
 
 
 
@@ -92,7 +93,7 @@ console.log(hall_id);
 
   return (
     <>
-    <Button size='sm' disabled={!user} onClick={onOpen}>Update</Button>
+    <Button colorScheme="messenger" size='xs' disabled={!user} onClick={onOpen}><EditIcon/></Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
