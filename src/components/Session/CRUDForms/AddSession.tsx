@@ -8,7 +8,7 @@ import ChakraForm from '../../ChakraForm';
 const AddSession = (props: any) => {
   const { data } = useMoviesQuery();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [createSession] = useCreateSessionMutation();
+  const [createSession, {data:errors}] = useCreateSessionMutation();
    
 
   if(!data?.movies){
@@ -103,7 +103,7 @@ const AddSession = (props: any) => {
           <ModalHeader>Session</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <ChakraForm fields={fields} onSubmit={onSubmit} errors=''/>
+            <ChakraForm fields={fields} onSubmit={onSubmit} errors={errors?.createSession.errors?.message}/>
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -92,7 +92,7 @@ const AddMovie = (props: any) => {
 
   return (
     <>
-    <Button marginBottom={10} onClick={onOpen}>Add Movie</Button>
+    <Button margin={5} onClick={onOpen}>Add Movie</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

@@ -353,8 +353,8 @@ const Calendar = (props: any) => {
   };
 
   return (
-    <Paper className="pt-3" >
-   
+    <Box my={[28,20]} mx="5">
+      <Paper className="p-5">
       <Scheduler data={sessions}>
 
         
@@ -400,7 +400,8 @@ const Calendar = (props: any) => {
         <AppointmentForm />
         <DragDropProvider />
       </Scheduler>
-    </Paper>
+      </Paper>
+    </Box>
   );
 };
 

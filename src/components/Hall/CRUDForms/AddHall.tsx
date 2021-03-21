@@ -29,7 +29,7 @@ const AddHall = (props: any) => {
 
   return (
     <>
-    <Button marginBottom={10} onClick={onOpen}>Add Hall</Button>
+    <Button margin={5} onClick={onOpen}>Add Hall</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
