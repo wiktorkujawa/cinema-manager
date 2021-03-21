@@ -92,7 +92,7 @@ console.log(hall_id);
 
   return (
     <>
-    <Button size='sm' disabled={!user} onClick={onOpen}>Update Session</Button>
+    <Button size='sm' disabled={!user} onClick={onOpen}>Update</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
