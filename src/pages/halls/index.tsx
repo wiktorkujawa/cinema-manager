@@ -23,7 +23,7 @@ const Halls = () => {
       user?.currentUser?
       <AddHall refetchHalls={refetchHalls}/>
       :
-      <Box mt="10" p="5" background="twitter.500" borderRadius="base">Sign in to add Hall</Box>
+      <Box mx="auto" my="10" textAlign="center" p="5" width="fit-content" background="twitter.500" borderRadius="base">Sign In to add Hall</Box>
     }
 
     <SimpleGrid columns={[1,1,2,3,4]} spacing={[2,8,12,15]} marginX={[1,10,15,20]}>

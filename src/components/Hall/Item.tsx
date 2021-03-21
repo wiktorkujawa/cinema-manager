@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import React, { Fragment } from "react";
 import {
-  // useCurrentUserQuery,
   useDeleteHallMutation,
   useDeleteSessionMutation,
 } from "../../generated/graphql";
@@ -23,8 +22,6 @@ import moment from "moment";
 const Item = (props: any) => {
   const base = useRouter();
   const { hall, refetchHalls, user } = props;
-
-  // const { data } = useCurrentUserQuery();
 
   const [deleteHall] = useDeleteHallMutation();
 
@@ -79,21 +76,7 @@ const Item = (props: any) => {
                   <Td>
                     {moment(session.endDate).format("MMMM Do YYYY, h:mm a")}
                   </Td>
-                  {/* <Td> */}
-                    {/* <Button
-                    disabled={!user}
-                     size="md"
-                     colorScheme="orange"
-                      onClick={() =>
-                        deleteSession({
-                          variables: { id: session.id },
-                          refetchQueries: refetchHalls,
-                        })
-                      }
-                    >
-                      X
-                    </Button> */}
-                  {/* </Td> */}
+    
                 </Tr>
                 <Tr borderBottom="solid 2px" >
                   <Td>Remove</Td>
