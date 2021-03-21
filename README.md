@@ -1,27 +1,34 @@
-# Example app with [chakra-ui](https://github.com/chakra-ui/chakra-ui) and Typescript
+# CinemaManagerApp
 
-This example features how to use [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with typescript.
+MERN(next.js) stack App for managing Cinema Halls, repertoir and schedules.
 
-Next.js and chakra-ui have built-in TypeScript declarations, so we'll get autocompletion for their modules straight away.
-
-We are connecting the Next.js `_app.js` with `chakra-ui`'s Provider and theme so the pages can have app-wide dark/light mode. We are also creating some components which shows the usage of `chakra-ui`'s style props.
-
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript&project-name=with-chakra-ui-typescript&repository-name=with-chakra-ui-typescript)
-
-## How to use
-
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
+## Description
+App for managing Cinema Halls, repertoir and schedules.
+  App written with Next.js(typescript boilerplate) and Typeorm withgraphql-apollo custom server(<b>express) with apollo-server-express andPostgresSQL database(Amazon RDS). Contains passport session authentication(local + google) with express-session to store session ID, nodemailer module to send activation email, type-graphql queries and mutations with connection to db migrations and entities created with Typeorm. Frontend created withchakra-ui components. Calendar component created with@devexpress/dx-react-scheduler andmaterial-ui. It also usesomdbApi movie database to add movies from database to Cinema repertoire. Queries and mutations hooks are generated withcodegen-graphql and state mangement is served withApollo Client.
+### Usage
+To run create .env file with following variables:
+- postgresHost
+- postgresUsername
+- postgresPort
+- postgresPassword
+- postgresDatabase
+- sessionSecret (express-session)
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- APP_EMAIL (to configure nodemailer with google mail)
+- APP_PASSWORD
+- SUPPORT_EMAIL
+- PAGE_NAME
+- OMDB_API_KEY
 ```bash
-npx create-next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
-# or
-yarn create next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
-```
+# Build the project
+yarn build
+# Run the app in dev mode
+yarn dev
+# Watch live the server changes(typeorm+backend)
+yarn watch
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+# App runs on http://localhost:3000
+# On http://localhost:3000/graphql you can check graphql queries
+```
