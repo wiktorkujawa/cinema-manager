@@ -19,8 +19,8 @@ export type Query = {
   __typename?: 'Query';
   posts?: Maybe<Array<Post>>;
   post?: Maybe<Post>;
-  users?: Maybe<User>;
-  currentUser?: Maybe<User>;
+  users?: Maybe<Users>;
+  currentUser?: Maybe<Users>;
   halls?: Maybe<Array<Hall>>;
   hall?: Maybe<Hall>;
   sessions?: Maybe<Array<Session>>;
@@ -61,8 +61,8 @@ export type Post = {
   content: Scalars['String'];
 };
 
-export type User = {
-  __typename?: 'User';
+export type Users = {
+  __typename?: 'Users';
   id: Scalars['Float'];
   email: Scalars['String'];
   password: Scalars['String'];
@@ -72,8 +72,9 @@ export type User = {
   lastName: Scalars['String'];
   active: Scalars['Boolean'];
   activeToken: Scalars['String'];
-  activeExpires: Scalars['Float'];
+  activeExpires: Scalars['DateTime'];
 };
+
 
 export type Hall = {
   __typename?: 'Hall';
@@ -91,7 +92,6 @@ export type Session = {
   endDate: Scalars['DateTime'];
   hall: Hall;
 };
-
 
 export type Movie = {
   __typename?: 'Movie';
@@ -261,7 +261,7 @@ export type SessionError = {
 export type SessionInput = {
   title: Scalars['String'];
   notes: Scalars['String'];
-  hall: Scalars['String'];
+  hallId: Scalars['Float'];
   startDate: Scalars['DateTime'];
   duration: Scalars['Float'];
 };
@@ -610,8 +610,8 @@ export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type CurrentUserQuery = (
   { __typename?: 'Query' }
   & { currentUser?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'email'>
+    { __typename?: 'Users' }
+    & Pick<Users, 'email'>
   )> }
 );
 

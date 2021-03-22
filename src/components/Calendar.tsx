@@ -31,7 +31,9 @@ import {
 import ColorLens from "@material-ui/icons/ColorLens";
 import { withStyles } from "@material-ui/core/styles";
 import { Box, HStack, useRadio, useRadioGroup } from "@chakra-ui/react";
-import { useDeleteSessionMutation, useMoveSessionMutation } from "../generated/graphql";
+import { 
+  useCreateSessionMutation, 
+  useDeleteSessionMutation, useMoveSessionMutation } from "../generated/graphql";
 // import { useSessionsQuery } from '../generated/graphql';
 
 const getBorder = (theme: any) =>
@@ -288,6 +290,8 @@ const FlexibleSpace = withStyles(styles, { name: "ToolbarRoot" })(
 const Calendar = (props: any) => {
   let { sessions, halls, refetchSessions } = props;
 
+  const [createSession] = useCreateSessionMutation();
+
   const [moveSession] = useMoveSessionMutation();
 
   const [deleteSession] = useDeleteSessionMutation();
@@ -317,6 +321,17 @@ const Calendar = (props: any) => {
   const commitChanges = ({ added, changed, deleted }: any) => {
 
     if (added) {
+      console.log(added);
+
+      return createSession({variables:{
+        input: {
+          hallId: added.hallId,
+          title: added.title,
+          notes: added.notes,
+          startDate: added.startDate,
+          duration: (added.endDate.getTime()-added.startDate.getTime())/60000
+        }
+      }});
       // const startingAddedId =
       //   appointments.length > 0
       //     ? appointments[appointments.length - 1].id + 1

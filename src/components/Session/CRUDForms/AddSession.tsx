@@ -81,14 +81,14 @@ const AddSession = (props: any) => {
   
   ];
 
-  const { refetchSessions, hall_name } = props;
+  const { refetchSessions, hall_id } = props;
 
 
   const onSubmit = (values: any) => {
     let { search, ...newValues} = values;
     newValues.duration=parseInt(values.duration);
     return createSession({ variables: { input: {
-      hall: hall_name,
+      hallId: hall_id,
       ...newValues} }, refetchQueries: refetchSessions });
   };
 
