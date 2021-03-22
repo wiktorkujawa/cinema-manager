@@ -18,7 +18,7 @@ const UpdateSession = (props: any) => {
 
   const onLabel = (option:any) => option.name;
 
-  const { refetchSessions, session, hall_id, user } = props;
+  const { refetchSessions, session, user } = props;
 
   const fields: any = [
     {
@@ -71,8 +71,6 @@ const UpdateSession = (props: any) => {
   
   ];
 
-  
-console.log(hall_id);
 
   const onSubmit = (values: any) => {
     

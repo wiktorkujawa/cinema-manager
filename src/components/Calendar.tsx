@@ -317,6 +317,7 @@ const Calendar = (props: any) => {
     },
   ];
   
+  let visibility = false;
 
   const commitChanges = ({ added, changed, deleted }: any) => {
 
@@ -332,17 +333,10 @@ const Calendar = (props: any) => {
           duration: (added.endDate.getTime()-added.startDate.getTime())/60000
         }
       }});
-      // const startingAddedId =
-      //   appointments.length > 0
-      //     ? appointments[appointments.length - 1].id + 1
-      //     : 0;
-      // setAppointments([...appointments, { id: startingAddedId, ...added }]);
     }
     if (changed) {
-      
       const id = Object.keys(changed)[0];
-      if(view == "Month"){
-
+      if(view == "Month" && visibility==false){
         const old = sessions.find((session:any) => session.id === parseInt(id));
         const difference = old.endDate.getTime() - old.startDate.getTime();
         const startTime = old.startDate.getHours()*3600000+old.startDate.getMinutes()*60000;
@@ -412,7 +406,9 @@ const Calendar = (props: any) => {
 
         <EditRecurrenceMenu />
         <AppointmentTooltip showCloseButton showDeleteButton showOpenButton />
-        <AppointmentForm />
+        <AppointmentForm
+        onVisibilityChange={(e)=> visibility = e }
+        />
         <DragDropProvider />
       </Scheduler>
       </Paper>
