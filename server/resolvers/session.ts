@@ -20,7 +20,7 @@ class SessionInput {
   @Field()
   notes: string;
   @Field()
-  hall: string;
+  hallId: number;
   @Field()
   startDate: Date;
   @Field()
@@ -81,7 +81,7 @@ export class SessionResolver {
   @Mutation(() => SessionResponse)
   async createSession(
     @Arg("input") input: SessionInput): Promise<SessionResponse>{
-      const hall = await Hall.findOne({name: input.hall}, {relations:["sessions"]});
+      const hall = await Hall.findOne(input.hallId, {relations:["sessions"]});
       let can_add=true;
       const startDate=input.startDate.getTime(); 
       const endDate= startDate+input.duration*60000;
@@ -102,11 +102,11 @@ export class SessionResolver {
         hall!.sessions.push(session);
         hall!.save();
         return {errors:{
-          message: `Session ${input.title} added to ${input.hall}`
+          message: `Session ${input.title} added to Hall`
         }};
       }
       return {errors:{
-        message: `Cant add session to ${input.hall}. Hall is already booked `
+        message: `Cant add session to this Hall. Hall is already booked `
       }};
       
     }

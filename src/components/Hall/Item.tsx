@@ -120,7 +120,7 @@ const Item = (props: any) => {
           user ?
           <>
             <UpdateHall refetchHalls={refetchHalls} hall={hall} />
-            <AddSession refetchHalls={refetchHalls} hall_name={hall.name} />
+            <AddSession refetchHalls={refetchHalls} hall_id={hall.id} />
           </> :
           <Box mx="auto">Sign in to modify hall and it's repertoir</Box>
         }

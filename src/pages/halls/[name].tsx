@@ -76,7 +76,7 @@ const name = () => {
       display="flex"
       justifyContent="center"
     >
-      <AddSession refetchHalls={refetchHalls} hall_name={data.hall.name} />{" "}
+      <AddSession refetchHalls={refetchHalls} hall_id={data.hall.id} />{" "}
     </Box>
   </Box>
   )
