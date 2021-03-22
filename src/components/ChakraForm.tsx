@@ -262,7 +262,7 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
                     <div>
                       <input
                         className="mt-2 btn btn-outline-dark"
-                        defaultValue={item.defaultValue.slice(0, 10) || new Date().toISOString().slice(0, 10)}
+                        defaultValue={item.defaultValue ? item.defaultValue.slice(0, 10) : new Date().toISOString().slice(0, 10)}
                         id={item.key}
                         type="date"
                         onChange={(event) => {
@@ -286,7 +286,7 @@ const ChakraForm = (props: { fields: Props[], onSubmit: any, errors: any }) => {
                     <div>
                       <input
                         className="mt-2 btn btn-outline-dark"
-                        defaultValue={item.defaultValue.slice(0, 16) || new Date().toISOString().slice(0, 16)}
+                        defaultValue={item.defaultValue ? item.defaultValue.slice(0, 16) : new Date().toISOString().slice(0, 16)}
                         id={item.key}
                         type="datetime-local"
                         onChange={(event) => {

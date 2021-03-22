@@ -138,7 +138,7 @@ export class SessionResolver {
     @Arg("input") input: moveSessionInput
     ): Promise<SessionResponse> {
 
-      const session = await Session.findOne(input.id, { relations:['hall']});
+      const session = await Session.findOne({id:input.id}, { relations:['hall']});
       if (!session) throw new Error("Session not found!");
       
       const newStart = input.startDate ? input.startDate.getTime() : session.startDate.getTime();
@@ -172,7 +172,7 @@ export class SessionResolver {
         session.save();
         return {
           errors:{
-            message:"Session moved"
+            message:"Session changed"
           }
         }
       }
