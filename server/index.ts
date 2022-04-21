@@ -41,6 +41,9 @@ const port = process.env.PORT || 3000;
       migrationsDir: __dirname + "/migration",
       subscribersDir: __dirname + "/subscriber",
     },
+    ssl: {
+      rejectUnauthorized: false
+    }
   });
   try {
     await app.prepare();
