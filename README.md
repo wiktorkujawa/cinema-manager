@@ -1,12 +1,12 @@
 # CinemaManagerApp
 
-MERN(next.js) stack App for managing Cinema Halls, repertoir and schedules.
+MERN(next.js) stack App for managing Cinema Halls, repertoire, and schedules.
 
 ## Description
-App for managing Cinema Halls, repertoir and schedules.
-  App written with Next.js(typescript boilerplate) and Typeorm withgraphql-apollo custom server(<b>express) with apollo-server-express andPostgresSQL database(Amazon RDS). Contains passport session authentication(local + google) with express-session to store session ID, nodemailer module to send activation email, type-graphql queries and mutations with connection to db migrations and entities created with Typeorm. Frontend created withchakra-ui components. Calendar component created with@devexpress/dx-react-scheduler andmaterial-ui. It also usesomdbApi movie database to add movies from database to Cinema repertoire. Queries and mutations hooks are generated withcodegen-graphql and state mangement is served withApollo Client.
+App for managing Cinema Halls, repertoire, and schedules.
+  An app is written with Next.js(typescript boilerplate) and Typeorm with graphql-apollo custom server(<b>express) with apollo-server-express and PostgresSQL database(Amazon RDS). Contains passport session authentication(local + google) with express-session to store session ID, nodemailer module to send activation email, type-graphql queries, and mutations with connection to db migrations and entities created with Typeorm. Frontend created with chakra-UI components. Calendar component created with@devexpress/dx-react-scheduler and material-ui. It also usesomdbApi movie database to add movies from the database to the Cinema repertoire. Queries and mutations hooks are generated with codegen-graphql and state management is served with Apollo Client.
 ### Usage
-To run create .env file with following variables:
+To run create .env file with the following variables:
 - postgresHost
 - postgresUsername
 - postgresPort
